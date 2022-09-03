@@ -154,6 +154,8 @@ function ProductVariants({ product }) {
     setCartItems(newCartItems);
     window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
     window.alert('已加入商品');
+    setSelectedSize();
+    setQuantity(1);
   }
   return (
     <>
