@@ -206,14 +206,16 @@ function ProductVariants({ product }) {
         <OptionName>尺寸｜</OptionName>
         {product.sizes.map((size) => {
           const stock = getStock(selectedColorCode, size);
+          const qty = getQty(selectedColorCode, size);
           return (
             <Size
               key={size}
               $isSelected={size === selectedSize}
-              $isDisabled={stock === 0}
+              $isDisabled={stock - qty <= 0}
               onClick={() => {
                 const stock = getStock(selectedColorCode, size);
-                if (stock === 0) return;
+                const qty = getQty(selectedColorCode, size);
+                if (stock - qty === 0) return;
                 setSelectedSize(size);
                 if (stock < quantity) setQuantity(1);
               }}
@@ -236,7 +238,8 @@ function ProductVariants({ product }) {
           <IncrementButton
             onClick={() => {
               const stock = getStock(selectedColorCode, selectedSize);
-              if (!selectedSize || quantity === stock) return;
+              const qty = getQty(selectedColorCode, selectedSize);
+              if (!selectedSize || quantity >= stock - qty) return;
               setQuantity(quantity + 1);
             }}
           />
