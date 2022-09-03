@@ -6,6 +6,8 @@ import { Reset } from 'styled-reset';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 
+import { cartItemsContext } from './utils/createContext';
+
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
@@ -33,11 +35,13 @@ function App() {
 
   return (
     <>
-      <Reset />
-      <GlobalStyle />
-      <Header cartItems={cartItems} />
-      <Outlet context={[cartItems, setCartItems]} />
-      <Footer />
+      <cartItemsContext.Provider value={[cartItems, setCartItems]}>
+        <Reset />
+        <GlobalStyle />
+        <Header cartItems={cartItems} />
+        <Outlet />
+        <Footer />
+      </cartItemsContext.Provider>
     </>
   );
 }
