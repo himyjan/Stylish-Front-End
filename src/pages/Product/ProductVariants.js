@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useState, useContext } from 'react';
 import styled from 'styled-components';
 
 import add from './add.png';
 import minus from './minus.png';
+
+import { cartItemsContext } from '../../utils/createContext';
 
 const Option = styled.div`
   display: flex;
@@ -124,7 +125,7 @@ function ProductVariants({ product }) {
   );
   const [selectedSize, setSelectedSize] = useState();
   const [quantity, setQuantity] = useState(1);
-  const [cartItems, setCartItems] = useOutletContext();
+  const [cartItems, setCartItems] = useContext(cartItemsContext);
 
   function getStock(colorCode, size) {
     return product.variants.find(
@@ -176,8 +177,8 @@ function ProductVariants({ product }) {
               price: product.price,
               qty: quantity,
               size: selectedSize,
-              stock: getStock(selectedColorCode, selectedSize)
-            }
+              stock: getStock(selectedColorCode, selectedSize),
+            },
           ];
     setCartItems(newCartItems);
     window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
