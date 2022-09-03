@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import api from '../../utils/api';
 import getJwtToken from '../../utils/getJwtToken';
 
+import { NavLink, Outlet } from 'react-router-dom';
+
 const Wrapper = styled.div`
   padding: 60px 20px;
   display: flex;
@@ -31,8 +33,72 @@ const LogoutButton = styled.button`
   margin-top: 24px;
 `;
 
-function Profile() {
+const PageSwitcher = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background: linear-gradient(
+    to ${(props) => (props.isSignIn ? 'right' : 'left')},
+    rgb(211, 225, 241) 0%,
+    rgb(211, 225, 241) 50%,
+    white 50%,
+    white 100%
+  );
+  width: 240px;
+  height: 30px;
+  border-radius: 10px;
+  border: solid 1px black;
+
+  &:after {
+    content: '';
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    border-left: 1px solid #000000;
+    transform: translate(-50%);
+  }
+`;
+
+export const signIn = (Provider, Email, Password) => {
+  let body = {
+    provider: Provider,
+    email: Email,
+    password: Password,
+  };
+
+  api.signin(body).then(async (response) => {
+    if (response.error) {
+      window.alert(response.error);
+    } else if (response.data) {
+      window.localStorage.setItem('jwtToken', response.data.access_token);
+      window.alert('登入成功！');
+    }
+  });
+};
+
+export const signUp = (Name, Email, Password) => {
+  let body = {
+    name: Name,
+    email: Email,
+    password: Password,
+  };
+
+  api.signUp(body).then(async (response) => {
+    if (response.error) {
+      window.alert(response.error);
+    } else if (response.data) {
+      window.localStorage.setItem('jwtToken', response.data.access_token);
+      window.alert('註冊成功！');
+    }
+  });
+};
+
+export const Profile = () => {
   const [profile, setProfile] = useState();
+  const [signMode, setSignMode] = useState();
 
   useEffect(() => {
     async function getProfile() {
@@ -46,8 +112,7 @@ function Profile() {
           return;
         }
       }
-      window.localStorage.setItem('jwtToken', jwtToken);
-
+      // window.localStorage.setItem("jwtToken", jwtToken);
       const { data } = await api.getProfile(jwtToken);
       setProfile(data);
     }
@@ -56,14 +121,47 @@ function Profile() {
 
   return (
     <Wrapper>
-      <Title>會員基本資訊</Title>
+      {!profile && (
+        <>
+          <PageSwitcher
+            isSignIn={signMode === 'sign-in'}
+            className="pageSwitcher"
+          >
+            <NavLink
+              to="/profile/sign-in"
+              activeClassName="pageSwitcherItem-active"
+              className="sign-in-link"
+              onClick={() => {
+                setSignMode('sign-in');
+              }}
+            >
+              Sign In
+            </NavLink>
+            <NavLink
+              exact
+              to="/profile/sign-up"
+              activeClassName="pageSwitcherItem-active"
+              className="sign-up-link"
+              onClick={() => {
+                setSignMode('sign-up');
+              }}
+            >
+              Sign Up
+            </NavLink>
+          </PageSwitcher>
+          <Outlet />
+        </>
+      )}
+      {profile && <Title>會員基本資訊</Title>}
       {profile && (
         <>
           <Photo src={profile.picture} />
           <Content>{profile.name}</Content>
           <Content>{profile.email}</Content>
           <LogoutButton
-            onClick={() => window.localStorage.removeItem('jwtToken')}
+            onClick={() => {
+              window.localStorage.removeItem('jwtToken');
+            }}
           >
             登出
           </LogoutButton>
@@ -71,6 +169,6 @@ function Profile() {
       )}
     </Wrapper>
   );
-}
+};
 
 export default Profile;
