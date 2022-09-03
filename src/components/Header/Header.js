@@ -58,6 +58,7 @@ const CategoryLinks = styled.div`
 `;
 
 const CategoryLink = styled.a`
+  cursor: pointer;
   font-size: 20px;
   letter-spacing: 30px;
   padding-left: 39px;
