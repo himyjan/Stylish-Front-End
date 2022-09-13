@@ -9,6 +9,8 @@ import Cart from './Cart';
 
 import { cartItemsContext } from '../../contexts/index';
 
+import { Prime } from '../../types/tapPayPrimeType';
+
 const Wrapper = styled.div`
   margin: 0 auto;
   padding: 47px 0 263px;
@@ -360,7 +362,7 @@ function Checkout() {
       return;
     }
 
-    const result = await tappay.getPrime();
+    const result: Prime = (await tappay.getPrime()) as Prime;
     if (result.status !== 0) {
       window.alert('付款資料輸入有誤');
       return;

@@ -1,7 +1,7 @@
 const fb = {
   loadScript() {
-    return new Promise((resolve) => {
-      window.fbAsyncInit = () => {
+    return new Promise<void>((resolve) => {
+      window['FBAsyncInit'] = () => {
         resolve();
       };
       (function (d, s, id) {
@@ -16,7 +16,7 @@ const fb = {
     });
   },
   init() {
-    window.FB.init({
+    window['FB'].init({
       appId: '700590737403665',
       cookie: true,
       xfbml: true,
@@ -25,14 +25,14 @@ const fb = {
   },
   getLoginStatus() {
     return new Promise((resolve) => {
-      window.FB.getLoginStatus((response) => {
+      window['FB'].getLoginStatus((response) => {
         resolve(response);
       });
     });
   },
   login() {
     return new Promise((resolve) => {
-      window.FB.login(
+      window['FB'].login(
         (response) => {
           resolve(response);
         },
@@ -41,8 +41,8 @@ const fb = {
     });
   },
   logout() {
-    return new Promise((resolve) => {
-      window.FB.logout(() => {
+    return new Promise<void>((resolve) => {
+      window['FB'].logout(() => {
         resolve();
       });
     });
