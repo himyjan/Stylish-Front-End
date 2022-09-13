@@ -43,7 +43,7 @@ function App() {
 
   return (
     <>
-      <cartItemsContext.Provider value={{ cartItems, dispatch }}>
+      <cartItemsContext.Provider value={[ cartItems, dispatch ]}>
         <Reset />
         <GlobalStyle />
         <Header />
