@@ -166,7 +166,7 @@ function ProductVariants({ product }) {
         stock: getStock(selectedColorCode, selectedSize),
       },
     ];
-    setCartItems(newCartItems);
+    dispatch({ payload: newCartItems });
     window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
     window.alert('已加入商品');
   }
