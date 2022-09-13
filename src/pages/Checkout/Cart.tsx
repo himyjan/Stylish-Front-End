@@ -1,7 +1,9 @@
-import { useOutletContext } from 'react-router-dom';
+import { useContext } from 'react';
 import styled from 'styled-components';
 
 import trash from './trash.png';
+
+import { cartItemsContext } from '../../contexts/index';
 
 const Header = styled.div`
   display: flex;
@@ -16,7 +18,15 @@ const ItemCount = styled.div`
   flex-grow: 1;
 `;
 
-const Quantity = styled.div`
+type hideOnMobileProp = {
+  hideOnMobile: boolean;
+};
+
+type hideOnDesktopProp = {
+  hideOnDesktop: boolean;
+};
+
+const Quantity = styled.div<hideOnMobileProp>`
   width: 185px;
   padding-left: 20px;
 
@@ -25,7 +35,7 @@ const Quantity = styled.div`
   }
 `;
 
-const UnitPrice = styled.div`
+const UnitPrice = styled.div<hideOnMobileProp>`
   width: 166px;
   padding-left: 12px;
 
@@ -34,7 +44,7 @@ const UnitPrice = styled.div`
   }
 `;
 
-const Price = styled.div`
+const Price = styled.div<hideOnMobileProp>`
   width: 167px;
   padding-left: 15px;
 
@@ -125,7 +135,7 @@ const ItemQuantity = styled.div`
   }
 `;
 
-const ItemQuantityName = styled.div`
+const ItemQuantityName = styled.div<hideOnDesktopProp>`
   ${(props) => props.hideOnDesktop && 'display: none;'}
 
   @media screen and (max-width: 1279px) {
@@ -157,7 +167,7 @@ const ItemUnitPrice = styled.div`
   }
 `;
 
-const ItemUnitPriceName = styled.div`
+const ItemUnitPriceName = styled.div<hideOnDesktopProp>`
   ${(props) => props.hideOnDesktop && 'display: none;'}
 
   @media screen and (max-width: 1279px) {
@@ -182,7 +192,7 @@ const ItemPrice = styled.div`
   }
 `;
 
-const ItemPriceName = styled.div`
+const ItemPriceName = styled.div<hideOnDesktopProp>`
   ${(props) => props.hideOnDesktop && 'display: none;'}
 
   @media screen and (max-width: 1279px) {
@@ -210,7 +220,7 @@ const DeleteButton = styled.div`
 `;
 
 function Cart() {
-  const [cartItems, setCartItems] = useOutletContext();
+  const { cartItems, dispatch } = useContext(cartItemsContext);
 
   function changeItemQuantity(itemIndex, itemQuantity) {
     const newCartItems = cartItems.map((item, index) =>
@@ -221,14 +231,14 @@ function Cart() {
           }
         : item
     );
-    setCartItems(newCartItems);
+    dispatch({ payload: newCartItems });
     window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
     window.alert('已修改數量');
   }
 
   function deleteItem(itemIndex) {
     const newCartItems = cartItems.filter((_, index) => index !== itemIndex);
-    setCartItems(newCartItems);
+    dispatch({ payload: newCartItems });
     window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
     window.alert('已刪除商品');
   }
@@ -259,7 +269,6 @@ function Cart() {
                 onChange={(e) => changeItemQuantity(index, e.target.value)}
               >
                 {Array(item.stock)
-                  .fill()
                   .map((_, index) => (
                     <option key={index}>{index + 1}</option>
                   ))}

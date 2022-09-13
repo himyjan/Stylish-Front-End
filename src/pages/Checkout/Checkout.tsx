@@ -1,11 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useEffect, useRef, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import api from '../../utils/api';
 import getJwtToken from '../../utils/getJwtToken';
 import tappay from '../../utils/tappay';
 import Cart from './Cart';
+
+import { cartItemsContext } from '../../contexts/index';
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -308,7 +310,7 @@ function Checkout() {
     address: '',
     time: '',
   });
-  const [cartItems, setCartItems] = useOutletContext();
+  const { cartItems, dispatch } = useContext(cartItemsContext);
   const navigate = useNavigate();
   const cardNumberRef = useRef();
   const cardExpirationDateRef = useRef();
@@ -380,7 +382,7 @@ function Checkout() {
       jwtToken
     );
     window.alert('付款成功');
-    setCartItems([]);
+    dispatch({ type: 'CLEAR_CART' });
     navigate('/thankyou', { state: { orderNumber: data.number } });
   }
 
