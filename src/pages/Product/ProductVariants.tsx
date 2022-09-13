@@ -1,4 +1,4 @@
-import { useState, useContext,useEffect } from 'react';
+import { useState, useContext } from 'react';
 import styled from 'styled-components';
 
 import add from './add.png';
@@ -140,7 +140,7 @@ function ProductVariants({ product }) {
   const [selectedSize, setSelectedSize] = useState();
   const [quantity, setQuantity] = useState(1);
   const { cartItems, dispatch } = useContext(cartItemsContext);
-  
+
   function getStock(colorCode, size) {
     return product.variants.find(
       (variant) => variant.color_code === colorCode && variant.size === size
@@ -154,39 +154,39 @@ function ProductVariants({ product }) {
     }
 
     // useEffect(()=>console.log(cartItems),[cartItems])
-    console.log(cartItems)
+    console.log(cartItems);
     const newCartItems =
-    cartItems === undefined
-      ? [
-          {
-            color: product.colors.find(
-              (color) => color.code === selectedColorCode
-            ),
-            id: product.id,
-            image: product.main_image,
-            name: product.title,
-            price: product.price,
-            qty: quantity,
-            size: selectedSize,
-            stock: getStock(selectedColorCode, selectedSize),
-          },
-        ]
-      : [
-          ...cartItems,
-          {
-            color: product.colors.find(
-              (color) => color.code === selectedColorCode
-            ),
-            id: product.id,
-            image: product.main_image,
-            name: product.title,
-            price: product.price,
-            qty: quantity,
-            size: selectedSize,
-            stock: getStock(selectedColorCode, selectedSize),
-          },
-        ];
-    dispatch({ type: "add", payload: newCartItems });
+      cartItems === undefined
+        ? [
+            {
+              color: product.colors.find(
+                (color) => color.code === selectedColorCode
+              ),
+              id: product.id,
+              image: product.main_image,
+              name: product.title,
+              price: product.price,
+              qty: quantity,
+              size: selectedSize,
+              stock: getStock(selectedColorCode, selectedSize),
+            },
+          ]
+        : [
+            ...cartItems,
+            {
+              color: product.colors.find(
+                (color) => color.code === selectedColorCode
+              ),
+              id: product.id,
+              image: product.main_image,
+              name: product.title,
+              price: product.price,
+              qty: quantity,
+              size: selectedSize,
+              stock: getStock(selectedColorCode, selectedSize),
+            },
+          ];
+    dispatch({ type: 'add', payload: newCartItems });
     window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
     window.alert('已加入商品');
   }
