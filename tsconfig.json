@@ -10,5 +10,5 @@
     "allowJs": false,
     "noEmit": true // Do not compile the JS (or TS) files in this project on build
   },
-  "include": ["src"]
+  "include": ["src", "src/types/images.d.ts"]
 }

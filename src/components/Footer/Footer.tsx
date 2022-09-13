@@ -83,7 +83,11 @@ const SocialLinks = styled.div`
   }
 `;
 
-const SocialLink = styled.div`
+type SocialLinkProp = {
+  icon: string;
+};
+
+const SocialLink = styled.div<SocialLinkProp>`
   width: 50px;
   height: 50px;
   background-size: contain;

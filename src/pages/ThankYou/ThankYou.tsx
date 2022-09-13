@@ -1,6 +1,8 @@
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { state } from '../../types/stateType';
+
 const Wrapper = styled.div`
   padding: 60px 20px;
   display: flex;
@@ -34,7 +36,7 @@ function ThankYou() {
     <Wrapper>
       <Title>感謝您的購買，我們會盡快將商品送達！</Title>
       <Content>請記住以下訂單編號，以便查詢</Content>
-      <Content>{state.orderNumber}</Content>
+      <Content>{(state as state).orderNumber}</Content>
       <BackButton onClick={() => navigate('/')}>繼續購物</BackButton>
     </Wrapper>
   );

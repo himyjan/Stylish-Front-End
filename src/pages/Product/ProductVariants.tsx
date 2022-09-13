@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useState, useContext } from 'react';
 import styled from 'styled-components';
 
 import add from './add.png';
 import minus from './minus.png';
+
+import { cartItemsContext } from '../../contexts/index';
 
 const Option = styled.div`
   display: flex;
@@ -11,7 +12,11 @@ const Option = styled.div`
   margin-top: 30px;
 `;
 
-const OptionName = styled.div`
+type OptionNameProp = {
+  hideOnMobile: boolean;
+};
+
+const OptionName = styled.div<OptionNameProp>`
   line-height: 24px;
   font-size: 20px;
   letter-spacing: 4px;
@@ -26,7 +31,12 @@ const OptionName = styled.div`
   }
 `;
 
-const Color = styled.div`
+type ColorProp = {
+  $isSelected: boolean;
+  $colorCode: string;
+};
+
+const Color = styled.div<ColorProp>`
   width: 36px;
   height: 36px;
   padding: 6px;
@@ -42,7 +52,12 @@ const Color = styled.div`
   }
 `;
 
-const Size = styled.div`
+type SizeProp = {
+  $isSelected: boolean;
+  $isDisabled: boolean;
+};
+
+const Size = styled.div<SizeProp>`
   width: 34px;
   height: 34px;
   background-color: ${(props) => (props.$isSelected ? 'black' : '#ececec')};
@@ -124,7 +139,7 @@ function ProductVariants({ product }) {
   );
   const [selectedSize, setSelectedSize] = useState();
   const [quantity, setQuantity] = useState(1);
-  const [cartItems, setCartItems] = useOutletContext();
+  const { cartItems, dispatch } = useContext(cartItemsContext);
 
   function getStock(colorCode, size) {
     return product.variants.find(
@@ -158,7 +173,7 @@ function ProductVariants({ product }) {
   return (
     <>
       <Option>
-        <OptionName>顏色｜</OptionName>
+        <OptionName hideOnMobile>顏色｜</OptionName>
         {product.colors.map((color) => (
           <Color
             key={color.code}
@@ -166,14 +181,14 @@ function ProductVariants({ product }) {
             $colorCode={`#${color.code}`}
             onClick={() => {
               setSelectedColorCode(color.code);
-              setSelectedSize();
+              setSelectedSize(null);
               setQuantity(1);
             }}
           />
         ))}
       </Option>
       <Option>
-        <OptionName>尺寸｜</OptionName>
+        <OptionName hideOnMobile>尺寸｜</OptionName>
         {product.sizes.map((size) => {
           const stock = getStock(selectedColorCode, size);
           return (

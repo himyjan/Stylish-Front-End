@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import api from '../../utils/api';
 import getJwtToken from '../../utils/getJwtToken';
 
+import { profile } from '../../types/profileType';
+
 const Wrapper = styled.div`
   padding: 60px 20px;
   display: flex;
@@ -32,7 +34,7 @@ const LogoutButton = styled.button`
 `;
 
 function Profile() {
-  const [profile, setProfile] = useState();
+  const [profile, setProfile] = useState<profile>();
 
   useEffect(() => {
     async function getProfile() {
