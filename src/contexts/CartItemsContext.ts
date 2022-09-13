@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { createContext, Dispatch } from 'react';
 import { product } from '../types/productType';
 
@@ -8,9 +9,11 @@ type ActionType = {
   payload: string;
 };
 
-const initialState = [] as product[] as State;
+const initialState = {
+  cartItems: JSON.parse((window.localStorage.getItem("cartItems") as string )) ||  [] 
+}
 
-export const cartItemsContext = createContext<[State, Dispatch<ActionType>]>([
-  initialState,
-  () => null,
-]);
+export const cartItemsContext = createContext <{cartItems: any, dispatch : Dispatch<any>}> ({
+  cartItems: initialState,
+  dispatch: () => null,
+});

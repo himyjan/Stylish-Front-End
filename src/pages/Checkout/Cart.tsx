@@ -269,7 +269,6 @@ function Cart() {
                 onChange={(e) => changeItemQuantity(index, e.target.value)}
               >
                 {Array(item.stock)
-                  .fill()
                   .map((_, index) => (
                     <option key={index}>{index + 1}</option>
                   ))}

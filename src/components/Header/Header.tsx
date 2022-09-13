@@ -254,6 +254,10 @@ function Header() {
     if (category) setInputValue('');
   }, [category]);
 
+    useEffect(() => {
+    console.log(cartItems);
+  }, [cartItems]);
+
   return (
     <Wrapper>
       <Logo to="/" />
@@ -286,7 +290,8 @@ function Header() {
       <PageLinks>
         <PageLink to="/checkout">
           <PageLinkCartIcon>
-            <PageLinkIconNumber>{(cartItems as []).length}</PageLinkIconNumber>
+            {cartItems}
+            <PageLinkIconNumber>{cartItems===undefined ? 0 : cartItems.length}</PageLinkIconNumber>
           </PageLinkCartIcon>
           <PageLinkText>購物車</PageLinkText>
         </PageLink>

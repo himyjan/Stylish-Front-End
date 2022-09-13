@@ -30,7 +30,8 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
-  const [cartItems, dispatch] = useReducer(cartItemsReducer, [], initializer);
+  const [cartItems,dispatch ] = useReducer(cartItemsReducer, JSON.parse((window.localStorage.getItem("cartItems") as string )) ||  [] as null
+  );
 
   useEffect(() => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
@@ -38,7 +39,7 @@ function App() {
 
   return (
     <>
-      <cartItemsContext.Provider value={[cartItems, dispatch]}>
+      <cartItemsContext.Provider value={{cartItems, dispatch}}>
         <Reset />
         <GlobalStyle />
         <Header />
