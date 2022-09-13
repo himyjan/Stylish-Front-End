@@ -244,7 +244,7 @@ const categories = [
 ];
 
 function Header() {
-  const { cartItems, dispatch } = useContext(cartItemsContext);
+  const { cartItems } = useContext(cartItemsContext);
   const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -254,7 +254,7 @@ function Header() {
     if (category) setInputValue('');
   }, [category]);
 
-    useEffect(() => {
+  useEffect(() => {
     console.log(cartItems);
   }, [cartItems]);
 
@@ -291,7 +291,9 @@ function Header() {
         <PageLink to="/checkout">
           <PageLinkCartIcon>
             {cartItems}
-            <PageLinkIconNumber>{cartItems===undefined ? 0 : cartItems.length}</PageLinkIconNumber>
+            <PageLinkIconNumber>
+              {cartItems === undefined ? 0 : cartItems.length}
+            </PageLinkIconNumber>
           </PageLinkCartIcon>
           <PageLinkText>購物車</PageLinkText>
         </PageLink>

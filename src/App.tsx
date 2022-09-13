@@ -7,7 +7,8 @@ import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 
 import { cartItemsContext } from './contexts/index';
-import { cartItemsReducer, initializer } from './reducers/index';
+import { cartItemsReducer } from './reducers/index';
+import { product } from './types/productType';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -30,7 +31,10 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
-  const [cartItems,dispatch ] = useReducer(cartItemsReducer, JSON.parse((window.localStorage.getItem("cartItems") as string )) ||  [] as null
+  const [cartItems, dispatch] = useReducer(
+    cartItemsReducer,
+    JSON.parse(window.localStorage.getItem('cartItems') as string) ||
+      ([] as product[])
   );
 
   useEffect(() => {
@@ -39,7 +43,7 @@ function App() {
 
   return (
     <>
-      <cartItemsContext.Provider value={{cartItems, dispatch}}>
+      <cartItemsContext.Provider value={{ cartItems, dispatch }}>
         <Reset />
         <GlobalStyle />
         <Header />
