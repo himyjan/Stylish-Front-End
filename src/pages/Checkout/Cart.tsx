@@ -220,7 +220,7 @@ const DeleteButton = styled.div`
 `;
 
 function Cart() {
-  const { cartItems, dispatch } = useContext(cartItemsContext);
+  const [cartItems, dispatch] = useContext(cartItemsContext);
 
   function changeItemQuantity(itemIndex, itemQuantity) {
     const newCartItems = cartItems.map((item, index) =>
@@ -268,10 +268,9 @@ function Cart() {
                 value={item.qty}
                 onChange={(e) => changeItemQuantity(index, e.target.value)}
               >
-                {Array(item.stock)
-                  .map((_, index) => (
-                    <option key={index}>{index + 1}</option>
-                  ))}
+                {Array(item.stock).map((_, index) => (
+                  <option key={index}>{index + 1}</option>
+                ))}
               </ItemQuantitySelect>
             </ItemQuantity>
             <ItemUnitPrice>

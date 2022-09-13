@@ -5,6 +5,7 @@ import add from './add.png';
 import minus from './minus.png';
 
 import { cartItemsContext } from '../../contexts/index';
+import { product } from '../../types/productType';
 
 const Option = styled.div`
   display: flex;
@@ -139,7 +140,7 @@ function ProductVariants({ product }) {
   );
   const [selectedSize, setSelectedSize] = useState();
   const [quantity, setQuantity] = useState(1);
-  const { cartItems, dispatch } = useContext(cartItemsContext);
+  const [cartItems, dispatch] = useContext(cartItemsContext);
 
   function getStock(colorCode, size) {
     return product.variants.find(
@@ -155,9 +156,9 @@ function ProductVariants({ product }) {
 
     // useEffect(()=>console.log(cartItems),[cartItems])
     console.log(cartItems);
-    const newCartItems =
+    const newCartItems: product[] =
       cartItems === undefined
-        ? [
+        ? ([
             {
               color: product.colors.find(
                 (color) => color.code === selectedColorCode
@@ -170,8 +171,8 @@ function ProductVariants({ product }) {
               size: selectedSize,
               stock: getStock(selectedColorCode, selectedSize),
             },
-          ]
-        : [
+          ] as product[])
+        : ([
             ...cartItems,
             {
               color: product.colors.find(
@@ -185,8 +186,8 @@ function ProductVariants({ product }) {
               size: selectedSize,
               stock: getStock(selectedColorCode, selectedSize),
             },
-          ];
-    dispatch({ type: 'add', payload: newCartItems });
+          ] as product[]);
+    dispatch({ payload: newCartItems });
     window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
     window.alert('已加入商品');
   }
