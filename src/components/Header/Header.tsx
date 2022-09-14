@@ -254,10 +254,6 @@ function Header() {
     if (category) setInputValue('');
   }, [category]);
 
-  // useEffect(() => {
-  //   console.log(cartItems);
-  // }, [cartItems]);
-
   return (
     <Wrapper>
       <Logo to="/" />

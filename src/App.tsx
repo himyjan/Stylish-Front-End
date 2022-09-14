@@ -37,13 +37,9 @@ function App() {
       ([] as Product[])
   );
 
-  useEffect(() => {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  }, [cartItems]);
-
   return (
     <>
-      <cartItemsContext.Provider value={[ cartItems, dispatch ]}>
+      <cartItemsContext.Provider value={[cartItems, dispatch]}>
         <Reset />
         <GlobalStyle />
         <Header />
