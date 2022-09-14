@@ -3,7 +3,7 @@ type Color = {
   name: string;
 };
 
-export type product = {
+export type Product = {
   id?: number;
   product_id?: number;
   picture?: string;

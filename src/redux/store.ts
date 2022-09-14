@@ -1,22 +1,22 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { initializer } from '../reducers/index';
-import { product } from '../types/productType';
+import { Product } from '../types/productType';
 import { Action } from './../types/reducerActionType';
 
 export const cartItemsSlice = createSlice({
   name: 'cartItems',
   initialState: initializer,
   reducers: {
-    ADD_TO_CART: (state: product[], action: Action) => {
-      state = action.payload as product[];
+    ADD_TO_CART: (state: Product[], action: Action) => {
+      state = action.payload as Product[];
     },
-    REMOVE_FROM_CART: (state: product[], action: Action) => {
-      state = action.payload as product[];
+    REMOVE_FROM_CART: (state: Product[], action: Action) => {
+      state = action.payload as Product[];
     },
-    DECREMENT_QUANTITY: (state: product[], action: Action) => {
-      state = action.payload as product[];
+    DECREMENT_QUANTITY: (state: Product[], action: Action) => {
+      state = action.payload as Product[];
     },
-    CLEAR_CART: (state: product[], action: Action) => {
+    CLEAR_CART: (state: Product[], action: Action) => {
       state.length = 0;
     },
   },
