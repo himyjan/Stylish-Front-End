@@ -155,7 +155,7 @@ function ProductVariants({ product }) {
 
     dispatch({
       type: 'add',
-      payload: { product, quantity, selectedSize, selectedColorCode, getStock },
+      payload: { product, quantity, selectedSize, selectedColorCode },
     });
   }
   return (
