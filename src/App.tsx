@@ -40,15 +40,6 @@ function App() {
 
   state = state as State;
 
-  useEffect(() => {
-    state = state as State;
-    localStorage.setItem(
-      'cartItems',
-      JSON.parse(window.localStorage.getItem('cartItems') as string) ||
-        ([] as product[])
-    );
-  }, [state.cartItems]);
-
   return (
     <>
       <cartItemsContext.Provider value={[state, dispatch]}>
