@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import { Outlet } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { Reset } from 'styled-reset';
@@ -8,6 +8,7 @@ import Header from './components/Header/Header';
 
 import { cartItemsContext } from './contexts/index';
 import { cartItemsReducer } from './reducers/index';
+import { Product } from './types/productType';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -30,14 +31,19 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
-  let [state, dispatch] = useReducer(
+  const [cartItems, dispatch] = useReducer(
     cartItemsReducer,
-    JSON.parse(window.localStorage.getItem('cartItems') as string) ?? []
+    JSON.parse(window.localStorage.getItem('cartItems') as string) ||
+      ([] as Product[])
   );
+
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   return (
     <>
-      <cartItemsContext.Provider value={[state, dispatch]}>
+      <cartItemsContext.Provider value={[ cartItems, dispatch ]}>
         <Reset />
         <GlobalStyle />
         <Header />

@@ -220,8 +220,7 @@ const DeleteButton = styled.div`
 `;
 
 function Cart() {
-  const [state, dispatch] = useContext(cartItemsContext);
-  const cartItems = state.cartItems;
+  const [cartItems, dispatch] = useContext(cartItemsContext);
 
   function changeItemQuantity(itemIndex, itemQuantity) {
     const newCartItems = cartItems.map((item, index) =>

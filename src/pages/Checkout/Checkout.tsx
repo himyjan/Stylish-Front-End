@@ -312,8 +312,7 @@ function Checkout() {
     address: '',
     time: '',
   });
-  const [state, dispatch] = useContext(cartItemsContext);
-  const cartItems = state.cartItems;
+  const [cartItems, dispatch] = useContext(cartItemsContext);
   const navigate = useNavigate();
   const cardNumberRef = useRef();
   const cardExpirationDateRef = useRef();

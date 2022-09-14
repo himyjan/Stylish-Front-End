@@ -244,8 +244,7 @@ const categories = [
 ];
 
 function Header() {
-  const [state] = useContext(cartItemsContext);
-  const cartItems = state.cartItems;
+  const [cartItems] = useContext(cartItemsContext);
   const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
