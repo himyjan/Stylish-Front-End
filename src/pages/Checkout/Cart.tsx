@@ -223,24 +223,17 @@ function Cart() {
   const [cartItems, dispatch] = useContext(cartItemsContext);
 
   function changeItemQuantity(itemIndex, itemQuantity) {
-    const newCartItems = cartItems.map((item, index) =>
-      index === itemIndex
-        ? {
-            ...item,
-            qty: itemQuantity,
-          }
-        : item
-    );
-    dispatch({ payload: newCartItems });
-    window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
-    window.alert('已修改數量');
+    dispatch({
+      type: 'changeQuantity',
+      payload: { itemIndex, itemQuantity },
+    });
   }
 
   function deleteItem(itemIndex) {
-    const newCartItems = cartItems.filter((_, index) => index !== itemIndex);
-    dispatch({ payload: newCartItems });
-    window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
-    window.alert('已刪除商品');
+     dispatch({
+       type: 'delete',
+       payload: { itemIndex },
+     });
   }
 
   return (

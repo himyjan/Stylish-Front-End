@@ -8,7 +8,7 @@ import Header from './components/Header/Header';
 
 import { cartItemsContext } from './contexts/index';
 import { cartItemsReducer } from './reducers/index';
-import { product } from './types/productType';
+import { Product } from './types/productType';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -34,16 +34,12 @@ function App() {
   const [cartItems, dispatch] = useReducer(
     cartItemsReducer,
     JSON.parse(window.localStorage.getItem('cartItems') as string) ||
-      ([] as product[])
+      ([] as Product[])
   );
-
-  useEffect(() => {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  }, [cartItems]);
 
   return (
     <>
-      <cartItemsContext.Provider value={[ cartItems, dispatch ]}>
+      <cartItemsContext.Provider value={[cartItems, dispatch]}>
         <Reset />
         <GlobalStyle />
         <Header />

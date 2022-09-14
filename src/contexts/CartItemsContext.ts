@@ -1,13 +1,13 @@
 import { createContext, Dispatch } from 'react';
-import { product } from '../types/productType';
+import { Product } from '../types/productType';
 import { Action } from '../types/reducerActionType';
 
-const initialState: product[] =
+const initialState: Product[] =
   (JSON.parse(
     window.localStorage.getItem('cartItems') as string
-  ) as product[]) || ([] as product[]);
+  ) as Product[]) || ([] as Product[]);
 
-export const cartItemsContext = createContext<[product[], Dispatch<Action>]>([
+export const cartItemsContext = createContext<[Product[], Dispatch<Action>]>([
   initialState,
   () => null,
 ]);

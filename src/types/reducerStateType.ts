@@ -1,7 +1,7 @@
-import { product } from './productType';
+import { Product } from './productType';
 
 export type State = {
-  cartItems?: product[];
+  cartItems?: Product[];
   selectedColorCode?: string;
   selectedSize?: string;
   quantity?: number;
