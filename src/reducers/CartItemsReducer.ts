@@ -47,7 +47,6 @@ export const cartItemsReducer = (state: State, action: Action) => {
 
     case 'CLEAR_CART':
       state.cartItems = [];
-      window.localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
       return state;
 
     default: {
