@@ -163,7 +163,8 @@ const Products = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [keyword, category, fetchProducts]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [keyword, category]);
 
   const ref = useRef();
   const onScreen = useIntersectionObserver(ref, { threshold: 0.5 });
@@ -174,7 +175,8 @@ const Products = () => {
     if (isFetching.current) return;
 
     fetchProducts();
-  }, [fetchProducts, nextPaging, onScreen]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onScreen]);
 
   // useEffect(() => {
   //  async function fetchProducts() {
