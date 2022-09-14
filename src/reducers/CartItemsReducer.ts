@@ -9,7 +9,7 @@ export const cartItemsReducer = (
   // 判斷指令
   switch (action.type) {
     case 'add': {
-      console.log(action.payload);
+      console.log(action);
       function getStock(colorCode, size) {
         return action.payload.product.variants.find(
           (variant) => variant.color_code === colorCode && variant.size === size
@@ -70,18 +70,18 @@ export const cartItemsReducer = (
   }
 };
 
-export const addCartItems = (item) => ({
+export const addCartItems = (payload) => ({
   type: 'add',
-  item,
+  payload,
 });
 
-export const changeQuantity = (item) => ({
+export const changeQuantity = (payload) => ({
   type: 'changeQuantity',
-  item,
+  payload,
 });
-export const deleteCartItems = (item) => ({
+export const deleteCartItems = (payload) => ({
   type: 'delete',
-  item,
+  payload,
 });
 
 export const clearCartItems = () => ({
