@@ -49,6 +49,7 @@ export const cartItemsReducer = (state, action) => {
       );
 
       window.alert('已修改商品數量');
+      window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
       return newCartItems;
     }
     case 'delete': {
