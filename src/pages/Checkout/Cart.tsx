@@ -232,14 +232,14 @@ function Cart() {
           }
         : item
     );
-    dispatch({ type: 'NEW_STATE', payload: newCartItems });
+    dispatch({ payload: newCartItems });
     window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
     window.alert('已修改數量');
   }
 
   function deleteItem(itemIndex) {
     const newCartItems = cartItems.filter((_, index) => index !== itemIndex);
-    dispatch({ type: 'NEW_STATE', payload: newCartItems });
+    dispatch({ payload: newCartItems });
     window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
     window.alert('已刪除商品');
   }
