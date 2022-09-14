@@ -5,7 +5,6 @@ import add from './add.png';
 import minus from './minus.png';
 
 import { useDispatch } from 'react-redux';
-import { store } from '../../redux/store';
 import { Product } from '../../types/productType';
 import { addCartItems } from '../../reducers/CartItemsReducer';
 
@@ -137,12 +136,12 @@ const AddToCart = styled.button`
 `;
 
 function ProductVariants({ product }) {
+  product = product as Product;
   const [selectedColorCode, setSelectedColorCode] = useState(
     product.colors[0].code
   );
   const [selectedSize, setSelectedSize] = useState();
   const [quantity, setQuantity] = useState(1);
-  const cartItems: Product[] = store.getState().cartItemsReducer;
   const dispatch = useDispatch();
 
   function getStock(colorCode, size) {

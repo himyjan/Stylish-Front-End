@@ -2,8 +2,7 @@ import styled from 'styled-components';
 
 import trash from './trash.png';
 
-import { useDispatch } from 'react-redux';
-import { store } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
 import { Product } from '../../types/productType';
 import {
   changeQuantity,
@@ -225,7 +224,10 @@ const DeleteButton = styled.div`
 `;
 
 function Cart() {
-  const cartItems: Product[] = store.getState().cartItemsReducer;
+  // const cartItems: Product[] = store.getState().cartItemsReducer;
+  const cartItems: Product[] = useSelector(
+    (state) => state['cartItemsReducer']
+  );
   const dispatch = useDispatch();
 
   function changeItemQuantity(itemIndex, itemQuantity) {

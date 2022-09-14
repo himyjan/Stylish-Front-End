@@ -9,8 +9,8 @@ import cartMobile from './cart-mobile.png';
 import profile from './profile.png';
 import profileMobile from './profile-mobile.png';
 
-import { store } from '../../redux/store';
 import { Product } from '../../types/productType';
+import { useSelector } from 'react-redux';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -245,7 +245,10 @@ const categories = [
 ];
 
 function Header() {
-  const cartItems: Product[] = store.getState().cartItemsReducer;
+  // const cartItems: Product[] = store.getState().cartItemsReducer;
+  const cartItems: Product[] = useSelector(
+    (state) => state['cartItemsReducer']
+  );
   const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
