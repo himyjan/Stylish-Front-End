@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import api from '../../utils/api';
 import ProductVariants from './ProductVariants';
 
-import { Product } from '../../types/productType';
+import { Product as ProductType } from '../../types/productType';
 
 const Wrapper = styled.div`
   max-width: 960px;
@@ -193,7 +193,7 @@ const Image = styled.img`
 `;
 
 function Product() {
-  const [product, setProduct] = useState<Product>();
+  const [product, setProduct] = useState<ProductType>();
   const { id } = useParams();
 
   useEffect(() => {
