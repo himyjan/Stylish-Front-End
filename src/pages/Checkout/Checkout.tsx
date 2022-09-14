@@ -12,6 +12,7 @@ import { Prime } from '../../types/tapPayPrimeType';
 import { useDispatch } from 'react-redux';
 import { store } from '../../redux/store';
 import { Product } from '../../types/productType';
+import { clearCartItems } from '../../reducers/CartItemsReducer';
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -387,7 +388,7 @@ function Checkout() {
       jwtToken
     );
     window.alert('付款成功');
-    dispatch({ type: 'CLEAR_CART' });
+    dispatch(clearCartItems());
     navigate('/thankyou', { state: { orderNumber: data.number } });
   }
 

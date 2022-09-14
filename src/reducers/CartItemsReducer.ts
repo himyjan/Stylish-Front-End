@@ -69,21 +69,20 @@ export const cartItemsReducer = (
   }
 };
 
-export const addToCart = (item) => ({
-  type: 'ADD_TO_CART',
+export const addCartItems = (item) => ({
+  type: 'add',
   item,
 });
 
-export const decrementItemQuantity = (item) => ({
-  type: 'DECREMENT_QUANTITY',
+export const changeQuantity = (item) => ({
+  type: 'changeQuantity',
+  item,
+});
+export const deleteCartItems = (item) => ({
+  type: 'delete',
   item,
 });
 
-export const removeFromCart = (item) => ({
-  type: 'REMOVE_FROM_CART',
-  item,
-});
-
-export const clearCart = () => ({
-  type: 'CLEAR_CART',
+export const clearCartItems = () => ({
+  type: 'clear',
 });

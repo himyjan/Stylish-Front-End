@@ -2,9 +2,13 @@ import styled from 'styled-components';
 
 import trash from './trash.png';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { store } from '../../redux/store';
 import { Product } from '../../types/productType';
+import {
+  changeQuantity,
+  deleteCartItems,
+} from '../../reducers/CartItemsReducer';
 
 const Header = styled.div`
   display: flex;
@@ -225,17 +229,11 @@ function Cart() {
   const dispatch = useDispatch();
 
   function changeItemQuantity(itemIndex, itemQuantity) {
-    dispatch({
-      type: 'changeQuantity',
-      payload: { itemIndex, itemQuantity },
-    });
+    dispatch(changeQuantity({ itemIndex, itemQuantity }));
   }
 
   function deleteItem(itemIndex) {
-    dispatch({
-      type: 'delete',
-      payload: { itemIndex },
-    });
+    dispatch(deleteCartItems({ itemIndex }));
   }
 
   return (

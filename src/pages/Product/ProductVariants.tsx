@@ -7,6 +7,7 @@ import minus from './minus.png';
 import { useDispatch } from 'react-redux';
 import { store } from '../../redux/store';
 import { Product } from '../../types/productType';
+import { addCartItems } from '../../reducers/CartItemsReducer';
 
 const Option = styled.div`
   display: flex;
@@ -156,10 +157,9 @@ function ProductVariants({ product }) {
       return;
     }
 
-    dispatch({
-      type: 'add',
-      payload: { product, quantity, selectedSize, selectedColorCode },
-    });
+    dispatch(
+      addCartItems({ product, quantity, selectedSize, selectedColorCode })
+    );
   }
   return (
     <>
