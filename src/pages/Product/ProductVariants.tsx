@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import add from './add.png';
 import minus from './minus.png';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { store } from '../../redux/store';
 import { Product } from '../../types/productType';
 
@@ -141,7 +141,7 @@ function ProductVariants({ product }) {
   );
   const [selectedSize, setSelectedSize] = useState();
   const [quantity, setQuantity] = useState(1);
-  const cartItems: Product[] = useSelector(store.getState().cartItemsReducer);
+  const cartItems: Product[] = store.getState().cartItemsReducer;
   const dispatch = useDispatch();
 
   function getStock(colorCode, size) {

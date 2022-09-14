@@ -9,7 +9,7 @@ import Cart from './Cart';
 
 import { Prime } from '../../types/tapPayPrimeType';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { store } from '../../redux/store';
 import { Product } from '../../types/productType';
 

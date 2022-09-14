@@ -9,7 +9,6 @@ import cartMobile from './cart-mobile.png';
 import profile from './profile.png';
 import profileMobile from './profile-mobile.png';
 
-import { useSelector } from 'react-redux';
 import { store } from '../../redux/store';
 import { Product } from '../../types/productType';
 
@@ -246,7 +245,7 @@ const categories = [
 ];
 
 function Header() {
-  const cartItems: Product[] = useSelector(store.getState().cartItemsReducer);
+  const cartItems: Product[] = store.getState().cartItemsReducer;
   const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();

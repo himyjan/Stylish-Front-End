@@ -221,7 +221,7 @@ const DeleteButton = styled.div`
 `;
 
 function Cart() {
-  const cartItems: Product[] = useSelector(store.getState().cartItemsReducer);
+  const cartItems: Product[] = store.getState().cartItemsReducer;
   const dispatch = useDispatch();
 
   function changeItemQuantity(itemIndex, itemQuantity) {
