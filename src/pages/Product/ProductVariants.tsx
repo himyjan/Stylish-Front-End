@@ -1,10 +1,12 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 import add from './add.png';
 import minus from './minus.png';
 
-import { cartItemsContext } from '../../contexts/index';
+import { useSelector, useDispatch } from 'react-redux';
+import { store } from '../../redux/store';
+import { Product } from '../../types/productType';
 
 const Option = styled.div`
   display: flex;
@@ -139,7 +141,7 @@ function ProductVariants({ product }) {
   );
   const [selectedSize, setSelectedSize] = useState();
   const [quantity, setQuantity] = useState(1);
-  const [cartItems, dispatch] = useContext(cartItemsContext);
+  const cartItems: Product[] = useSelector(store.getState().cartItemsReducer);
 
   function getStock(colorCode, size) {
     return product.variants.find(

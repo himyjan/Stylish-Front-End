@@ -1,9 +1,10 @@
-import { useContext } from 'react';
 import styled from 'styled-components';
 
 import trash from './trash.png';
 
-import { cartItemsContext } from '../../contexts/index';
+import { useSelector, useDispatch } from 'react-redux';
+import { store } from '../../redux/store';
+import { Product } from '../../types/productType';
 
 const Header = styled.div`
   display: flex;
@@ -220,7 +221,7 @@ const DeleteButton = styled.div`
 `;
 
 function Cart() {
-  const [cartItems, dispatch] = useContext(cartItemsContext);
+  const cartItems: Product[] = useSelector(store.getState().cartItemsReducer);
 
   function changeItemQuantity(itemIndex, itemQuantity) {
     dispatch({
@@ -230,10 +231,10 @@ function Cart() {
   }
 
   function deleteItem(itemIndex) {
-     dispatch({
-       type: 'delete',
-       payload: { itemIndex },
-     });
+    dispatch({
+      type: 'delete',
+      payload: { itemIndex },
+    });
   }
 
   return (

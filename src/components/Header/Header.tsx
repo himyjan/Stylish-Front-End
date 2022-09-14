@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -9,7 +9,9 @@ import cartMobile from './cart-mobile.png';
 import profile from './profile.png';
 import profileMobile from './profile-mobile.png';
 
-import { cartItemsContext } from '../../contexts/index';
+import { useSelector } from 'react-redux';
+import { store } from '../../redux/store';
+import { Product } from '../../types/productType';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -244,7 +246,7 @@ const categories = [
 ];
 
 function Header() {
-  const [cartItems] = useContext(cartItemsContext);
+  const cartItems: Product[] = useSelector(store.getState().cartItemsReducer);
   const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();

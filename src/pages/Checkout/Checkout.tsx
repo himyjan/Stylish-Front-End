@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useContext } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -7,9 +7,11 @@ import getJwtToken from '../../utils/getJwtToken';
 import tappay from '../../utils/tappay';
 import Cart from './Cart';
 
-import { cartItemsContext } from '../../contexts/index';
-
 import { Prime } from '../../types/tapPayPrimeType';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { store } from '../../redux/store';
+import { Product } from '../../types/productType';
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -312,7 +314,7 @@ function Checkout() {
     address: '',
     time: '',
   });
-  const [cartItems, dispatch] = useContext(cartItemsContext);
+  const cartItems: Product[] = useSelector(store.getState().cartItemsReducer);
   const navigate = useNavigate();
   const cardNumberRef = useRef();
   const cardExpirationDateRef = useRef();

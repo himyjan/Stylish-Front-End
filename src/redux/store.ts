@@ -1,3 +1,13 @@
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import { cartItemsReducer } from '../reducers/index';
-export const store = createStore(cartItemsReducer);
+
+const rootReducer = combineReducers({
+  cartItemsReducer,
+});
+
+export const store = createStore(
+  rootReducer,
+  JSON.parse(localStorage.getItem('cartItems')) || []
+);
+
+console.log(store.getState());
