@@ -315,6 +315,7 @@ function Checkout() {
     time: '',
   });
   const cartItems: Product[] = useSelector(store.getState().cartItemsReducer);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const cardNumberRef = useRef();
   const cardExpirationDateRef = useRef();

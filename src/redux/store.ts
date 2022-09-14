@@ -5,9 +5,6 @@ const rootReducer = combineReducers({
   cartItemsReducer,
 });
 
-export const store = createStore(
-  rootReducer,
-  JSON.parse(localStorage.getItem('cartItems')) || []
-);
+export const store = createStore(rootReducer);
 
 console.log(store.getState());

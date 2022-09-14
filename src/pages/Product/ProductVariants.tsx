@@ -142,6 +142,7 @@ function ProductVariants({ product }) {
   const [selectedSize, setSelectedSize] = useState();
   const [quantity, setQuantity] = useState(1);
   const cartItems: Product[] = useSelector(store.getState().cartItemsReducer);
+  const dispatch = useDispatch();
 
   function getStock(colorCode, size) {
     return product.variants.find(
