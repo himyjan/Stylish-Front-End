@@ -5,7 +5,7 @@ import add from './add.png';
 import minus from './minus.png';
 
 import { cartItemsContext } from '../../contexts/index';
-import { product } from '../../types/productType';
+import { Product } from '../../types/productType';
 
 const Option = styled.div`
   display: flex;
@@ -157,7 +157,7 @@ function ProductVariants({ product }) {
 
     // useEffect(()=>console.log(cartItems),[cartItems])
     console.log(cartItems);
-    const newCartItems: product[] =
+    const newCartItems: Product[] =
       cartItems === undefined
         ? ([
             {
@@ -172,7 +172,7 @@ function ProductVariants({ product }) {
               size: selectedSize,
               stock: getStock(selectedColorCode, selectedSize),
             },
-          ] as product[])
+          ] as Product[])
         : ([
             ...cartItems,
             {
@@ -187,7 +187,7 @@ function ProductVariants({ product }) {
               size: selectedSize,
               stock: getStock(selectedColorCode, selectedSize),
             },
-          ] as product[]);
+          ] as Product[]);
     dispatch({ type: 'NEW_STATE', payload: newCartItems });
     window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
     window.alert('已加入商品');

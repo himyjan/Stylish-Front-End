@@ -25,14 +25,14 @@ export const cartItemsReducer = (state: State, action: Action) => {
     //   )
     // : [...state, { ...action.item, quantity: 1 }];
 
-    case 'REMOVE_FROM_CART': {
-      return state;
-    }
+    // case 'REMOVE_FROM_CART': {
+    //   return state;
+    // }
     // .filter((item) => item.name !== action.item.name);
 
-    case 'DECREMENT_QUANTITY': {
-      return state;
-    }
+    // case 'DECREMENT_QUANTITY': {
+    //   return state;
+    // }
     // .find((item) => item.name === action.item.name)?.quantity ===
     // 1
     // ? state.filter((item) => item.name !== action.item.name)
@@ -47,13 +47,8 @@ export const cartItemsReducer = (state: State, action: Action) => {
 
     case 'CLEAR_CART':
       state.cartItems = [];
+      window.localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
       return state;
-
-    case 'NEW_STATE': {
-      console.log(action.payload);
-      state.cartItems = action.payload;
-      return state;
-    }
 
     default: {
       return state;
