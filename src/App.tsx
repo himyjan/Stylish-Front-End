@@ -8,7 +8,6 @@ import Header from './components/Header/Header';
 
 import { cartItemsContext } from './contexts/index';
 import { cartItemsReducer } from './reducers/index';
-import { product } from './types/productType';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -33,8 +32,7 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   let [state, dispatch] = useReducer(
     cartItemsReducer,
-    JSON.parse(window.localStorage.getItem('cartItems') as string) ??
-      ([] as product[])
+    JSON.parse(window.localStorage.getItem('cartItems') as string) ?? []
   );
 
   return (
