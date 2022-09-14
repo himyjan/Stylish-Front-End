@@ -38,8 +38,6 @@ function App() {
       ([] as product[])
   );
 
-  state = state as State;
-
   return (
     <>
       <cartItemsContext.Provider value={[state, dispatch]}>

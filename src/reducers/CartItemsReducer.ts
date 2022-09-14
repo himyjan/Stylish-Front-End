@@ -46,7 +46,8 @@ export const cartItemsReducer = (state: State, action: Action) => {
     //   );
 
     case 'CLEAR_CART':
-      return initialState;
+      state.cartItems = [];
+      return state;
 
     case 'NEW_STATE': {
       console.log(action.payload);
