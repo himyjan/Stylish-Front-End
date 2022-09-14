@@ -1,13 +1,7 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
-import { cartItemsReducer, initializer } from '../reducers/index';
+import { initializer } from '../reducers/index';
 import { product } from '../types/productType';
 import { Action } from './../types/reducerActionType';
-
-export const store = configureStore({
-  reducer: {
-    cartItems: cartItemsReducer,
-  },
-});
 
 export const cartItemsSlice = createSlice({
   name: 'cartItems',
@@ -25,5 +19,11 @@ export const cartItemsSlice = createSlice({
     CLEAR_CART: (state: product[], action: Action) => {
       state.length = 0;
     },
+  },
+});
+
+export const store = configureStore({
+  reducer: {
+    cartItems: cartItemsSlice.reducer,
   },
 });
