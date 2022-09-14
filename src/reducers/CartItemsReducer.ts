@@ -9,7 +9,6 @@ export const cartItemsReducer = (
   // 判斷指令
   switch (action.type) {
     case 'add': {
-      console.log(action);
       function getStock(colorCode, size) {
         return action.payload.product.variants.find(
           (variant) => variant.color_code === colorCode && variant.size === size
