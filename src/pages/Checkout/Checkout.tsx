@@ -1,11 +1,19 @@
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useEffect, useRef, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import api from '../../utils/api';
 import getJwtToken from '../../utils/getJwtToken';
 import tappay from '../../utils/tappay';
 import Cart from './Cart';
+
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+import { cartItemsContext } from '../../contexts/index';
+
+import { Prime } from '../../types/tapPayPrimeType';
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -279,24 +287,32 @@ const formInputs = [
     label: '收件人姓名',
     key: 'name',
     text: '務必填寫完整收件人姓名，避免包裹無法順利簽收',
+    error: '此欄位必填',
   },
-  { label: 'Email', key: 'email' },
-  { label: '手機', key: 'phone' },
-  { label: '地址', key: 'address' },
+  {
+    label: '手機',
+    key: 'phone',
+    error: '請輸入正確手機號碼:前兩碼須為09,共10個數字,僅限數字不得有任何符號',
+  },
+  { label: 'Email', key: 'email', error: '請輸入正確的email格式' },
+  { label: '地址', key: 'address', error: '此欄位必填' },
 ];
 
 const timeOptions = [
   {
     label: '08:00-12:00',
     value: 'morning',
+    error: '此欄位必填',
   },
   {
     label: '14:00-18:00',
     value: 'afternoon',
+    error: '此欄位必填',
   },
   {
     label: '不指定',
     value: 'anytime',
+    error: '此欄位必填',
   },
 ];
 
@@ -308,7 +324,7 @@ function Checkout() {
     address: '',
     time: '',
   });
-  const [cartItems, setCartItems] = useOutletContext();
+  const [cartItems, dispatch] = useContext(cartItemsContext);
   const navigate = useNavigate();
   const cardNumberRef = useRef();
   const cardExpirationDateRef = useRef();
@@ -328,7 +344,7 @@ function Checkout() {
     0
   );
 
-  const freight = 30;
+  const freight = subtotal > 0 ? 30 : 0;
 
   async function checkout() {
     let jwtToken = window.localStorage.getItem('jwtToken');
@@ -358,7 +374,7 @@ function Checkout() {
       return;
     }
 
-    const result = await tappay.getPrime();
+    const result: Prime = (await tappay.getPrime()) as Prime;
     if (result.status !== 0) {
       window.alert('付款資料輸入有誤');
       return;
@@ -380,9 +396,50 @@ function Checkout() {
       jwtToken
     );
     window.alert('付款成功');
-    setCartItems([]);
+    dispatch({ type: 'CLEAR_CART' });
     navigate('/thankyou', { state: { orderNumber: data.number } });
   }
+
+  const schema = yup
+    .object()
+    .shape({
+      name: yup
+        .string()
+        .required('此欄位必填')
+        .min(1, { message: '此欄位必填' }),
+      phone: yup
+        .string()
+        .required('此欄位必填')
+        .matches(/^09[0-9]{8}$/)
+        .min(10, { message: '此欄位必填10位數字' })
+        .max(10, { message: '此欄位必填10位數字' }),
+      address: yup.string().min(1, { message: '此欄位必填' }),
+      email: yup
+        .string()
+        .required('此欄位必填')
+        .matches(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)
+        .min(1, { message: '此欄位必填' }),
+      time: yup
+        .string()
+        .required('此欄位必填')
+        .min(1, { message: '此欄位必選' }),
+    })
+    .required();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      name: '',
+      phone: '',
+      address: '',
+      email: '',
+      time: '',
+    },
+    resolver: yupResolver(schema),
+  });
 
   return (
     <Wrapper>
@@ -402,19 +459,26 @@ function Checkout() {
         <br />● 選擇宅配-請填寫正確收件人資訊，避免包裹配送不達
         <br />● 選擇超商-請填寫正確收件人姓名(與證件相符)，避免無法領取
       </Note>
-      <form>
+      <form
+        onSubmit={handleSubmit((data, e) => {
+          checkout();
+        })}
+      >
         <FormFieldSet>
           <FormLegend>訂購資料</FormLegend>
           {formInputs.map((input) => (
             <FormGroup key={input.key}>
               <FormLabel>{input.label}</FormLabel>
               <FormControl
+                {...register(`${input.key}`)}
+                id={input.key}
                 value={recipient[input.key]}
                 onChange={(e) =>
                   setRecipient({ ...recipient, [input.key]: e.target.value })
                 }
               />
               {input.text && <FormText>{input.text}</FormText>}
+              {errors[input.key] && input.error}
             </FormGroup>
           ))}
           <FormGroup>
@@ -422,7 +486,10 @@ function Checkout() {
             {timeOptions.map((option) => (
               <FormCheck key={option.value}>
                 <FormCheckInput
+                  {...register('time')}
+                  id="time"
                   type="radio"
+                  value={option.value}
                   checked={recipient.time === option.value}
                   onChange={(e) => {
                     if (e.target.checked)
@@ -432,6 +499,7 @@ function Checkout() {
                 <FormCheckLabel>{option.label}</FormCheckLabel>
               </FormCheck>
             ))}
+            {errors.time && timeOptions[0].error}
           </FormGroup>
         </FormFieldSet>
         <FormFieldSet>
@@ -449,23 +517,23 @@ function Checkout() {
             <FormControl as="div" ref={cardCCVRef} />
           </FormGroup>
         </FormFieldSet>
+        <SubtotalPrice>
+          <PriceName>總金額</PriceName>
+          <Currency>NT.</Currency>
+          <PriceValue>{subtotal}</PriceValue>
+        </SubtotalPrice>
+        <ShippingPrice>
+          <PriceName>運費</PriceName>
+          <Currency>NT.</Currency>
+          <PriceValue>{freight}</PriceValue>
+        </ShippingPrice>
+        <TotalPrice>
+          <PriceName>應付金額</PriceName>
+          <Currency>NT.</Currency>
+          <PriceValue>{subtotal + freight}</PriceValue>
+        </TotalPrice>
+        <CheckoutButton type="submit">確認付款</CheckoutButton>
       </form>
-      <SubtotalPrice>
-        <PriceName>總金額</PriceName>
-        <Currency>NT.</Currency>
-        <PriceValue>{subtotal}</PriceValue>
-      </SubtotalPrice>
-      <ShippingPrice>
-        <PriceName>運費</PriceName>
-        <Currency>NT.</Currency>
-        <PriceValue>{freight}</PriceValue>
-      </ShippingPrice>
-      <TotalPrice>
-        <PriceName>應付金額</PriceName>
-        <Currency>NT.</Currency>
-        <PriceValue>{subtotal + freight}</PriceValue>
-      </TotalPrice>
-      <CheckoutButton onClick={checkout}>確認付款</CheckoutButton>
     </Wrapper>
   );
 }

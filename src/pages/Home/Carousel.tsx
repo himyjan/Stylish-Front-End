@@ -13,7 +13,12 @@ const Wrapper = styled.div`
   }
 `;
 
-const Campaign = styled(Link)`
+type CampaignProp = {
+  $backgroundImageUrl: string;
+  $isActive: boolean;
+};
+
+const Campaign = styled(Link)<CampaignProp>`
   width: 100%;
   height: 100%;
   position: absolute;
@@ -73,7 +78,11 @@ const Dots = styled.div`
   }
 `;
 
-const Dot = styled.div`
+type DotProp = {
+  $isActive: boolean;
+};
+
+const Dot = styled.div<DotProp>`
   width: 10px;
   height: 10px;
   background-color: ${(props) => (props.$isActive ? '#8b572a' : 'white')};
@@ -95,60 +104,84 @@ const Dot = styled.div`
   }
 `;
 
-function Carousel() {
-  const [campaigns, setCampaigns] = useState([]);
-  const [activeCampaignIndex, setActiveCampaignIndex] = useState(0);
-  const intervalRef = useRef();
+const useInterval = (callback, delay) => {
+  const savedCallback = useRef();
 
   useEffect(() => {
-    async function getCampaigns() {
-      const { data } = await api.getCampaigns();
-      setCampaigns(data);
-      intervalRef.current = window.setInterval(() => {
-        setActiveCampaignIndex((prev) =>
-          prev === data.length - 1 ? 0 : prev + 1
-        );
-      }, 5000);
+    savedCallback.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    const tick = () => {
+      savedCallback.current();
+    };
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
     }
-    getCampaigns();
+  }, [delay]);
+};
+
+const Carousel = (props) => {
+  const [campaigns, setCampaigns] = useState([]);
+  const [activeCampaignIndex, setActiveCampaignIndex] = useState(0);
+  const [pause, setPause] = useState(false);
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await api.getCampaigns();
+      setCampaigns(data.data);
+    };
+    getData();
   }, []);
+
+  useInterval(
+    () => {
+      setActiveCampaignIndex((prev) =>
+        campaigns.length > 0
+          ? prev === campaigns.length - 1
+            ? 0
+            : prev + 1
+          : null
+      );
+    },
+    pause ? null : 5000
+  );
 
   return (
     <Wrapper>
-      {campaigns.map(({ picture, product_id, story }, index) => (
-        <Campaign
-          $isActive={index === activeCampaignIndex}
-          $backgroundImageUrl={picture}
-          key={index}
-          to={`/products/${product_id}`}
-        >
-          <Story>
-            <StoryContent>
-              {story.split('\r\n').slice(0, 3).join('\r\n')}
-            </StoryContent>
-            <StoryTitle>{story.split('\r\n')[3]}</StoryTitle>
-          </Story>
-        </Campaign>
-      ))}
+      {campaigns.length > 0
+        ? campaigns.map(({ picture, product_id, story }, index) => (
+            <Campaign
+              $isActive={index === activeCampaignIndex}
+              $backgroundImageUrl={picture}
+              key={index}
+              to={`/products/${product_id}`}
+              onMouseEnter={() => setPause(true)}
+              onMouseLeave={() => setPause(false)}
+            >
+              <Story>
+                <StoryContent>
+                  {story.split('\r\n').slice(0, 3).join('\r\n')}
+                </StoryContent>
+                <StoryTitle>{story.split('\r\n')[3]}</StoryTitle>
+              </Story>
+            </Campaign>
+          ))
+        : null}
       <Dots>
-        {campaigns.map((_, index) => (
-          <Dot
-            $isActive={index === activeCampaignIndex}
-            key={index}
-            onClick={() => {
-              setActiveCampaignIndex(index);
-              window.clearInterval(intervalRef.current);
-              intervalRef.current = window.setInterval(() => {
-                setActiveCampaignIndex((prev) =>
-                  prev === campaigns.length - 1 ? 0 : prev + 1
-                );
-              }, 5000);
-            }}
-          />
-        ))}
+        {campaigns.length > 0
+          ? campaigns.map((_, index) => (
+              <Dot
+                $isActive={index === activeCampaignIndex}
+                key={index}
+                onClick={() => setActiveCampaignIndex(index)}
+              />
+            ))
+          : null}
       </Dots>
     </Wrapper>
   );
-}
+};
 
 export default Carousel;

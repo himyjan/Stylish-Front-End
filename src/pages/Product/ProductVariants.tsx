@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useState, useContext } from 'react';
 import styled from 'styled-components';
 
 import add from './add.png';
 import minus from './minus.png';
+
+import { cartItemsContext } from '../../contexts/index';
 
 const Option = styled.div`
   display: flex;
@@ -11,7 +12,11 @@ const Option = styled.div`
   margin-top: 30px;
 `;
 
-const OptionName = styled.div`
+type OptionNameProp = {
+  hideOnMobile: boolean;
+};
+
+const OptionName = styled.div<OptionNameProp>`
   line-height: 24px;
   font-size: 20px;
   letter-spacing: 4px;
@@ -26,7 +31,12 @@ const OptionName = styled.div`
   }
 `;
 
-const Color = styled.div`
+type ColorProp = {
+  $isSelected: boolean;
+  $colorCode: string;
+};
+
+const Color = styled.div<ColorProp>`
   width: 36px;
   height: 36px;
   padding: 6px;
@@ -42,7 +52,12 @@ const Color = styled.div`
   }
 `;
 
-const Size = styled.div`
+type SizeProp = {
+  $isSelected: boolean;
+  $isDisabled: boolean;
+};
+
+const Size = styled.div<SizeProp>`
   width: 34px;
   height: 34px;
   background-color: ${(props) => (props.$isSelected ? 'black' : '#ececec')};
@@ -124,12 +139,22 @@ function ProductVariants({ product }) {
   );
   const [selectedSize, setSelectedSize] = useState();
   const [quantity, setQuantity] = useState(1);
-  const [cartItems, setCartItems] = useOutletContext();
+  const [cartItems, dispatch] = useContext(cartItemsContext);
 
   function getStock(colorCode, size) {
     return product.variants.find(
       (variant) => variant.color_code === colorCode && variant.size === size
     ).stock;
+  }
+
+  function getQty(colorCode, size) {
+    let qty = 0;
+    cartItems.forEach((cartItem) => {
+      if (cartItem.color.code === colorCode && cartItem.size === size) {
+        qty += cartItem.qty;
+      }
+    });
+    return qty;
   }
 
   function addToCart() {
@@ -138,27 +163,17 @@ function ProductVariants({ product }) {
       return;
     }
 
-    const newCartItems = [
-      ...cartItems,
-      {
-        color: product.colors.find((color) => color.code === selectedColorCode),
-        id: product.id,
-        image: product.main_image,
-        name: product.title,
-        price: product.price,
-        qty: quantity,
-        size: selectedSize,
-        stock: getStock(selectedColorCode, selectedSize),
-      },
-    ];
-    setCartItems(newCartItems);
-    window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
-    window.alert('已加入商品');
+    dispatch({
+      type: 'add',
+      payload: { product, quantity, selectedSize, selectedColorCode },
+    });
+    setSelectedSize(null);
+    setQuantity(1);
   }
   return (
     <>
       <Option>
-        <OptionName>顏色｜</OptionName>
+        <OptionName hideOnMobile>顏色｜</OptionName>
         {product.colors.map((color) => (
           <Color
             key={color.code}
@@ -166,24 +181,26 @@ function ProductVariants({ product }) {
             $colorCode={`#${color.code}`}
             onClick={() => {
               setSelectedColorCode(color.code);
-              setSelectedSize();
+              setSelectedSize(null);
               setQuantity(1);
             }}
           />
         ))}
       </Option>
       <Option>
-        <OptionName>尺寸｜</OptionName>
+        <OptionName hideOnMobile>尺寸｜</OptionName>
         {product.sizes.map((size) => {
           const stock = getStock(selectedColorCode, size);
+          const qty = getQty(selectedColorCode, size);
           return (
             <Size
               key={size}
               $isSelected={size === selectedSize}
-              $isDisabled={stock === 0}
+              $isDisabled={stock - qty <= 0}
               onClick={() => {
                 const stock = getStock(selectedColorCode, size);
-                if (stock === 0) return;
+                const qty = getQty(selectedColorCode, size);
+                if (stock - qty === 0) return;
                 setSelectedSize(size);
                 if (stock < quantity) setQuantity(1);
               }}
@@ -206,7 +223,8 @@ function ProductVariants({ product }) {
           <IncrementButton
             onClick={() => {
               const stock = getStock(selectedColorCode, selectedSize);
-              if (!selectedSize || quantity === stock) return;
+              const qty = getQty(selectedColorCode, selectedSize);
+              if (!selectedSize || quantity >= stock - qty) return;
               setQuantity(quantity + 1);
             }}
           />
