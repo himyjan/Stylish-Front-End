@@ -5,7 +5,7 @@ const initialState = [];
 
 // 初始資料，為 state 的初始值，通常會在這裡把結構描述完整
 export const initializer = (initialValue = initialState) =>
-  JSON.parse(localStorage.getItem('cartItems')) || initialValue;
+  JSON.parse(localStorage.getItem('cartItems')) ?? initialValue;
 
 // 一個 Reducer 用來描述根據指令執行對應的動作，會回傳一個新的 state 物件，是個純函式
 export const cartItemsReducer = (state: State, action: Action) => {

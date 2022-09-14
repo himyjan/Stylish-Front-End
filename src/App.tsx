@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useReducer } from 'react';
 import { Outlet } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { Reset } from 'styled-reset';
@@ -9,7 +9,6 @@ import Header from './components/Header/Header';
 import { cartItemsContext } from './contexts/index';
 import { cartItemsReducer } from './reducers/index';
 import { product } from './types/productType';
-import { State } from './types/reducerStateType';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -34,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   let [state, dispatch] = useReducer(
     cartItemsReducer,
-    JSON.parse(window.localStorage.getItem('cartItems') as string) ||
+    JSON.parse(window.localStorage.getItem('cartItems') as string) ??
       ([] as product[])
   );
 
