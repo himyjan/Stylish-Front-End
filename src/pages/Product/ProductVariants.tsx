@@ -136,11 +136,10 @@ const AddToCart = styled.button`
 `;
 
 function ProductVariants({ product }) {
-  product = product as Product;
   const [selectedColorCode, setSelectedColorCode] = useState(
     product.colors[0].code
   );
-  const [selectedSize, setSelectedSize] = useState();
+  const [selectedSize, setSelectedSize] = useState<string>();
   const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
 
