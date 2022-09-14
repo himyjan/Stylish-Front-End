@@ -314,7 +314,7 @@ function Checkout() {
     address: '',
     time: '',
   });
-  const cartItems: Product[] = useSelector(store.getState().cartItemsReducer);
+  const cartItems: Product[] = store.getState().cartItemsReducer;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cardNumberRef = useRef();
