@@ -220,7 +220,8 @@ const DeleteButton = styled.div`
 `;
 
 function Cart() {
-  const [cartItems, dispatch] = useContext(cartItemsContext);
+  const [state, dispatch] = useContext(cartItemsContext);
+  const cartItems = state.cartItems;
 
   function changeItemQuantity(itemIndex, itemQuantity) {
     const newCartItems = cartItems.map((item, index) =>
@@ -231,14 +232,14 @@ function Cart() {
           }
         : item
     );
-    dispatch({ payload: newCartItems });
+    dispatch({ type: 'NEW_STATE', payload: newCartItems });
     window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
     window.alert('已修改數量');
   }
 
   function deleteItem(itemIndex) {
     const newCartItems = cartItems.filter((_, index) => index !== itemIndex);
-    dispatch({ payload: newCartItems });
+    dispatch({ type: 'NEW_STATE', payload: newCartItems });
     window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
     window.alert('已刪除商品');
   }

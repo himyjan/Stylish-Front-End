@@ -9,6 +9,7 @@ import Header from './components/Header/Header';
 import { cartItemsContext } from './contexts/index';
 import { cartItemsReducer } from './reducers/index';
 import { product } from './types/productType';
+import { State } from './types/reducerStateType';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -31,19 +32,26 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
-  const [cartItems, dispatch] = useReducer(
+  let [state, dispatch] = useReducer(
     cartItemsReducer,
     JSON.parse(window.localStorage.getItem('cartItems') as string) ||
       ([] as product[])
   );
 
+  state = state as State;
+
   useEffect(() => {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  }, [cartItems]);
+    state = state as State;
+    localStorage.setItem(
+      'cartItems',
+      JSON.parse(window.localStorage.getItem('cartItems') as string) ||
+        ([] as product[])
+    );
+  }, [state.cartItems]);
 
   return (
     <>
-      <cartItemsContext.Provider value={[ cartItems, dispatch ]}>
+      <cartItemsContext.Provider value={[state, dispatch]}>
         <Reset />
         <GlobalStyle />
         <Header />

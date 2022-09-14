@@ -140,7 +140,8 @@ function ProductVariants({ product }) {
   );
   const [selectedSize, setSelectedSize] = useState();
   const [quantity, setQuantity] = useState(1);
-  const [cartItems, dispatch] = useContext(cartItemsContext);
+  const [state, dispatch] = useContext(cartItemsContext);
+  const cartItems = state.cartItems;
 
   function getStock(colorCode, size) {
     return product.variants.find(
@@ -187,7 +188,7 @@ function ProductVariants({ product }) {
               stock: getStock(selectedColorCode, selectedSize),
             },
           ] as product[]);
-    dispatch({ payload: newCartItems });
+    dispatch({ type: 'NEW_STATE', payload: newCartItems });
     window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
     window.alert('已加入商品');
   }
