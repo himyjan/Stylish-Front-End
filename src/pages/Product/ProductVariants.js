@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import add from './add.png';
 import minus from './minus.png';
 
-import { cartItemsContext } from '../../contexts/Context';
+import { cartItemsContext } from '../../contexts';
 
 const Option = styled.div`
   display: flex;

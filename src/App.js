@@ -6,7 +6,7 @@ import { Reset } from 'styled-reset';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 
-import { cartItemsContext } from './contexts/Context';
+import { cartItemsContext } from './contexts';
 
 const GlobalStyle = createGlobalStyle`
   * {

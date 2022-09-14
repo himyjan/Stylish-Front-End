@@ -9,7 +9,7 @@ import cartMobile from './cart-mobile.png';
 import profile from './profile.png';
 import profileMobile from './profile-mobile.png';
 
-import { cartItemsContext } from '../../contexts/Context';
+import { cartItemsContext } from '../../contexts';
 
 const Wrapper = styled.div`
   position: fixed;

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import trash from './trash.png';
 
-import { cartItemsContext } from '../../contexts/Context';
+import { cartItemsContext } from '../../contexts';
 
 const Header = styled.div`
   display: flex;

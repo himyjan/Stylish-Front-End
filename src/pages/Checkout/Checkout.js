@@ -10,7 +10,7 @@ import getJwtToken from '../../utils/getJwtToken';
 import tappay from '../../utils/tappay';
 import Cart from './Cart';
 
-import { cartItemsContext } from '../../contexts/Context';
+import { cartItemsContext } from '../../contexts';
 
 const Wrapper = styled.div`
   margin: 0 auto;
