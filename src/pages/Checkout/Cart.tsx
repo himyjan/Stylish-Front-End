@@ -232,10 +232,10 @@ function Cart() {
   }
 
   function deleteItem(itemIndex) {
-     dispatch({
-       type: 'delete',
-       payload: { itemIndex },
-     });
+    dispatch({
+      type: 'delete',
+      payload: { itemIndex },
+    });
   }
 
   return (
