@@ -8,7 +8,9 @@
     "target": "ESNext",
     "sourceMap": true,
     "allowJs": false,
-    "noEmit": true // Do not compile the JS (or TS) files in this project on build
+    "noEmit": true, // Do not compile the JS (or TS) files in this project on build
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "include": ["src", "src/types/images.d.ts"]
 }
