@@ -1,5 +1,5 @@
 import * as React from 'react';
-import HeaderIcon from './HeaderIcon';
+import HeaderIcon from './STYLiSH-HeaderIcon';
 
 export default {
   title: 'STYLiSH/HeaderIcon',
