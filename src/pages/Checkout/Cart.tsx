@@ -9,6 +9,8 @@ import {
   deleteCartItems,
 } from '../../reducers/CartItemsReducer';
 
+import * as _ from 'lodash';
+
 const Header = styled.div`
   display: flex;
 
@@ -263,8 +265,10 @@ function Cart() {
                 value={item.qty}
                 onChange={(e) => changeItemQuantity(index, e.target.value)}
               >
-                {Array(item.stock).map((_, index) => (
-                  <option key={index}>{index + 1}</option>
+                {_.range(1, item.stock + 1).map((_, index) => (
+                  <option key={index} value={index}>
+                    {index + 1}
+                  </option>
                 ))}
               </ItemQuantitySelect>
             </ItemQuantity>
