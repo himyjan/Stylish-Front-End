@@ -2,6 +2,9 @@ import * as React from 'react';
 
 import { Button } from './Button';
 
+import styled from 'styled-components';
+import classNameProps from './types/styleComponentsType';
+
 type User = {
   name: string;
 };
@@ -20,7 +23,7 @@ export const Header = ({
   onCreateAccount,
 }: HeaderProps) => (
   <header>
-    <div className="wrapper">
+    <HeaderStyledComponents className="wrapper">
       <div>
         <svg
           width="32"
@@ -65,6 +68,44 @@ export const Header = ({
           </>
         )}
       </div>
-    </div>
+    </HeaderStyledComponents>
   </header>
 );
+
+const HeaderStyledComponents = styled.div<classNameProps>`
+  ${(props) =>
+    props.className.includes('wrapper')
+      ? `
+        font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      `
+      : null}
+
+  svg {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  h1 {
+    font-weight: 900;
+    font-size: 20px;
+    line-height: 1;
+    margin: 6px 0 6px 10px;
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  button + button {
+    margin-left: 10px;
+  }
+
+  .welcome {
+    color: #333;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+`;
