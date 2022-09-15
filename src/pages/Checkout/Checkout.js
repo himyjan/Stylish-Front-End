@@ -499,8 +499,8 @@ function Checkout() {
                 <FormCheckLabel>{option.label}</FormCheckLabel>
               </FormCheck>
             ))}
-            {errors.time && timeOptions[0].error}
           </FormGroup>
+          {errors.time && timeOptions[0].error}
         </FormFieldSet>
         <FormFieldSet>
           <FormLegend>付款資料</FormLegend>
