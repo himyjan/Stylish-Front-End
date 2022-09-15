@@ -245,9 +245,11 @@ const categories = [
 
 function Header() {
   // const cartItems: Product[] = store.getState().cartItemsReducer;
-  const cartItemsLength: number = useSelector(
+
+  const cartItemsLength = useSelector(
     (state) => state['cartItemsReducer'].length
   );
+
   const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
