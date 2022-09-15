@@ -9,7 +9,6 @@ import cartMobile from './cart-mobile.png';
 import profile from './profile.png';
 import profileMobile from './profile-mobile.png';
 
-import { Product } from '../../types/productType';
 import { useSelector } from 'react-redux';
 
 const Wrapper = styled.div`
