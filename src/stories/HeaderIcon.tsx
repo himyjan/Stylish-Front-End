@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import cart from './cart.png';
-import cartMobile from './cart-mobile.png';
-import profile from './profile.png';
-import profileMobile from './profile-mobile.png';
+import cart from './assets/cart.png';
+import cartMobile from './assets/cart-mobile.png';
+import profile from './assets/profile.png';
+import profileMobile from './assets/profile-mobile.png';
 
 type PageLinkProp = {
   to: string;
