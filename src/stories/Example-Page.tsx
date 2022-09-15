@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Header } from './Header';
+import { Header } from './Example-Header';
 
 import styled from 'styled-components';
 import classNameProps from './types/styleComponentsType';

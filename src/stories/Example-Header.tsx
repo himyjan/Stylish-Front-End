@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Button } from './Button';
+import { Button } from './Example-Button';
 
 import styled from 'styled-components';
 import classNameProps from './types/styleComponentsType';
