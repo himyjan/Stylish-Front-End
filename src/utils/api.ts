@@ -41,16 +41,6 @@ const api = {
     });
     return await response.json();
   },
-  async signUp(data) {
-    const response = await fetch(`${this.hostname}/user/signup`, {
-      body: JSON.stringify(data),
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-      method: 'POST',
-    });
-    return await response.json();
-  },
   async getProfile(jwtToken) {
     const response = await fetch(`${this.hostname}/user/profile`, {
       headers: new Headers({

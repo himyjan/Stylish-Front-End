@@ -1,10 +1,11 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 import add from './add.png';
 import minus from './minus.png';
 
-import { cartItemsContext } from '../../contexts/index';
+import { useDispatch } from 'react-redux';
+import { addCartItems } from '../../reducers/CartItemsReducer';
 
 const Option = styled.div`
   display: flex;
@@ -137,24 +138,14 @@ function ProductVariants({ product }) {
   const [selectedColorCode, setSelectedColorCode] = useState(
     product.colors[0].code
   );
-  const [selectedSize, setSelectedSize] = useState();
+  const [selectedSize, setSelectedSize] = useState<string>();
   const [quantity, setQuantity] = useState(1);
-  const [cartItems, dispatch] = useContext(cartItemsContext);
+  const dispatch = useDispatch();
 
   function getStock(colorCode, size) {
     return product.variants.find(
       (variant) => variant.color_code === colorCode && variant.size === size
     ).stock;
-  }
-
-  function getQty(colorCode, size) {
-    let qty = 0;
-    cartItems.forEach((cartItem) => {
-      if (cartItem.color.code === colorCode && cartItem.size === size) {
-        qty += cartItem.qty;
-      }
-    });
-    return qty;
   }
 
   function addToCart() {
@@ -163,12 +154,9 @@ function ProductVariants({ product }) {
       return;
     }
 
-    dispatch({
-      type: 'add',
-      payload: { product, quantity, selectedSize, selectedColorCode },
-    });
-    setSelectedSize(null);
-    setQuantity(1);
+    dispatch(
+      addCartItems({ product, quantity, selectedSize, selectedColorCode })
+    );
   }
   return (
     <>
@@ -191,16 +179,14 @@ function ProductVariants({ product }) {
         <OptionName hideOnMobile>尺寸｜</OptionName>
         {product.sizes.map((size) => {
           const stock = getStock(selectedColorCode, size);
-          const qty = getQty(selectedColorCode, size);
           return (
             <Size
               key={size}
               $isSelected={size === selectedSize}
-              $isDisabled={stock - qty <= 0}
+              $isDisabled={stock === 0}
               onClick={() => {
                 const stock = getStock(selectedColorCode, size);
-                const qty = getQty(selectedColorCode, size);
-                if (stock - qty === 0) return;
+                if (stock === 0) return;
                 setSelectedSize(size);
                 if (stock < quantity) setQuantity(1);
               }}
@@ -223,8 +209,7 @@ function ProductVariants({ product }) {
           <IncrementButton
             onClick={() => {
               const stock = getStock(selectedColorCode, selectedSize);
-              const qty = getQty(selectedColorCode, selectedSize);
-              if (!selectedSize || quantity >= stock - qty) return;
+              if (!selectedSize || quantity === stock) return;
               setQuantity(quantity + 1);
             }}
           />
