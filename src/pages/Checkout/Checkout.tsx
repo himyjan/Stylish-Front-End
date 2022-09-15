@@ -337,7 +337,7 @@ function Checkout() {
     0
   );
 
-  const freight = 30;
+  const freight = subtotal > 0 ? 30 : 0;
 
   async function checkout() {
     let jwtToken = window.localStorage.getItem('jwtToken');
