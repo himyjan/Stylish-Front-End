@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -9,7 +9,7 @@ import cartMobile from './cart-mobile.png';
 import profile from './profile.png';
 import profileMobile from './profile-mobile.png';
 
-import { cartItemsContext } from '../../contexts/index';
+import { useSelector } from 'react-redux';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -244,7 +244,12 @@ const categories = [
 ];
 
 function Header() {
-  const [cartItems] = useContext(cartItemsContext);
+  // const cartItems: Product[] = store.getState().cartItemsReducer;
+
+  const cartItemsLength = useSelector(
+    (state) => state['cartItemsReducer'].length
+  );
+
   const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -287,7 +292,7 @@ function Header() {
         <PageLink to="/checkout">
           <PageLinkCartIcon>
             <PageLinkIconNumber>
-              {cartItems === undefined ? 0 : cartItems.length}
+              {cartItemsLength === undefined ? 0 : cartItemsLength}
             </PageLinkIconNumber>
           </PageLinkCartIcon>
           <PageLinkText>購物車</PageLinkText>

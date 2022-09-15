@@ -1,14 +1,9 @@
-import { useEffect, useReducer } from 'react';
 import { Outlet } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { Reset } from 'styled-reset';
 
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
-
-import { cartItemsContext } from './contexts/index';
-import { cartItemsReducer } from './reducers/index';
-import { Product } from './types/productType';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -31,25 +26,13 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
-  const [cartItems, dispatch] = useReducer(
-    cartItemsReducer,
-    JSON.parse(window.localStorage.getItem('cartItems') as string) ||
-      ([] as Product[])
-  );
-
-  useEffect(() => {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  }, [cartItems]);
-
   return (
     <>
-      <cartItemsContext.Provider value={[cartItems, dispatch]}>
-        <Reset />
-        <GlobalStyle />
-        <Header />
-        <Outlet />
-        <Footer />
-      </cartItemsContext.Provider>
+      <Reset />
+      <GlobalStyle />
+      <Header />
+      <Outlet />
+      <Footer />
     </>
   );
 }

@@ -1,13 +1,11 @@
 import { Product } from '../types/productType';
 
-const initialState = [];
-
 // 初始資料，為 state 的初始值，通常會在這裡把結構描述完整
-export const initializer = (initialValue = initialState) =>
-  JSON.parse(localStorage.getItem('cartItems')) || initialValue;
-
 // 一個 Reducer 用來描述根據指令執行對應的動作，會回傳一個新的 state 物件，是個純函式
-export const cartItemsReducer = (state, action) => {
+export const cartItemsReducer = (
+  state = JSON.parse(localStorage.getItem('cartItems')) || [],
+  action
+) => {
   // 判斷指令
   switch (action.type) {
     case 'add': {
@@ -49,6 +47,7 @@ export const cartItemsReducer = (state, action) => {
       );
 
       window.alert('已修改商品數量');
+      window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
       return newCartItems;
     }
     case 'delete': {
@@ -70,21 +69,20 @@ export const cartItemsReducer = (state, action) => {
   }
 };
 
-export const addToCart = (item) => ({
-  type: 'ADD_TO_CART',
-  item,
+export const addCartItems = (payload) => ({
+  type: 'add',
+  payload,
 });
 
-export const decrementItemQuantity = (item) => ({
-  type: 'DECREMENT_QUANTITY',
-  item,
+export const changeQuantity = (payload) => ({
+  type: 'changeQuantity',
+  payload,
+});
+export const deleteCartItems = (payload) => ({
+  type: 'delete',
+  payload,
 });
 
-export const removeFromCart = (item) => ({
-  type: 'REMOVE_FROM_CART',
-  item,
-});
-
-export const clearCart = () => ({
-  type: 'CLEAR_CART',
+export const clearCartItems = () => ({
+  type: 'clear',
 });

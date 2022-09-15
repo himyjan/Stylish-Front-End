@@ -1,10 +1,11 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 import add from './add.png';
 import minus from './minus.png';
 
-import { cartItemsContext } from '../../contexts/index';
+import { useDispatch } from 'react-redux';
+import { addCartItems } from '../../reducers/CartItemsReducer';
 
 const Option = styled.div`
   display: flex;
@@ -137,9 +138,9 @@ function ProductVariants({ product }) {
   const [selectedColorCode, setSelectedColorCode] = useState(
     product.colors[0].code
   );
-  const [selectedSize, setSelectedSize] = useState();
+  const [selectedSize, setSelectedSize] = useState<string>();
   const [quantity, setQuantity] = useState(1);
-  const [cartItems, dispatch] = useContext(cartItemsContext);
+  const dispatch = useDispatch();
 
   function getStock(colorCode, size) {
     return product.variants.find(
@@ -153,10 +154,9 @@ function ProductVariants({ product }) {
       return;
     }
 
-    dispatch({
-      type: 'add',
-      payload: { product, quantity, selectedSize, selectedColorCode },
-    });
+    dispatch(
+      addCartItems({ product, quantity, selectedSize, selectedColorCode })
+    );
   }
   return (
     <>

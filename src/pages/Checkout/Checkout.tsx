@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useContext } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -7,9 +7,11 @@ import getJwtToken from '../../utils/getJwtToken';
 import tappay from '../../utils/tappay';
 import Cart from './Cart';
 
-import { cartItemsContext } from '../../contexts/index';
-
 import { Prime } from '../../types/tapPayPrimeType';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { Product } from '../../types/productType';
+import { clearCartItems } from '../../reducers/CartItemsReducer';
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -312,7 +314,10 @@ function Checkout() {
     address: '',
     time: '',
   });
-  const [cartItems, dispatch] = useContext(cartItemsContext);
+  const cartItems: Product[] = useSelector(
+    (state) => state['cartItemsReducer']
+  );
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const cardNumberRef = useRef();
   const cardExpirationDateRef = useRef();
@@ -384,7 +389,7 @@ function Checkout() {
       jwtToken
     );
     window.alert('付款成功');
-    dispatch({ type: 'CLEAR_CART' });
+    dispatch(clearCartItems());
     navigate('/thankyou', { state: { orderNumber: data.number } });
   }
 

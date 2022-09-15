@@ -1,9 +1,13 @@
-import { useContext } from 'react';
 import styled from 'styled-components';
 
 import trash from './trash.png';
 
-import { cartItemsContext } from '../../contexts/index';
+import { useDispatch, useSelector } from 'react-redux';
+import { Product } from '../../types/productType';
+import {
+  changeQuantity,
+  deleteCartItems,
+} from '../../reducers/CartItemsReducer';
 
 const Header = styled.div`
   display: flex;
@@ -220,20 +224,18 @@ const DeleteButton = styled.div`
 `;
 
 function Cart() {
-  const [cartItems, dispatch] = useContext(cartItemsContext);
+  // const cartItems: Product[] = store.getState().cartItemsReducer;
+  const cartItems: Product[] = useSelector(
+    (state) => state['cartItemsReducer']
+  );
+  const dispatch = useDispatch();
 
   function changeItemQuantity(itemIndex, itemQuantity) {
-    dispatch({
-      type: 'changeQuantity',
-      payload: { itemIndex, itemQuantity },
-    });
+    dispatch(changeQuantity({ itemIndex, itemQuantity }));
   }
 
   function deleteItem(itemIndex) {
-     dispatch({
-       type: 'delete',
-       payload: { itemIndex },
-     });
+    dispatch(deleteCartItems({ itemIndex }));
   }
 
   return (
