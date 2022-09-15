@@ -9,8 +9,7 @@ import Cart from './Cart';
 
 import { Prime } from '../../types/tapPayPrimeType';
 
-import { useDispatch } from 'react-redux';
-import { store } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
 import { Product } from '../../types/productType';
 import { clearCartItems } from '../../reducers/CartItemsReducer';
 
@@ -315,7 +314,9 @@ function Checkout() {
     address: '',
     time: '',
   });
-  const cartItems: Product[] = store.getState().cartItemsReducer;
+  const cartItems: Product[] = useSelector(
+    (state) => state['cartItemsReducer']
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cardNumberRef = useRef();
