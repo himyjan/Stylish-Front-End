@@ -5,7 +5,6 @@ import add from './add.png';
 import minus from './minus.png';
 
 import { useDispatch } from 'react-redux';
-import { Product } from '../../types/productType';
 import { addCartItems } from '../../reducers/CartItemsReducer';
 
 const Option = styled.div`
