@@ -27,7 +27,7 @@ LinkWithActive.args = {
       displayText: '配件',
     },
   ],
-  curcategory: 'men',
+  currentCategory: 'men',
 };
 
 export const LinkWithoutActive = Template.bind({});
@@ -46,5 +46,5 @@ LinkWithoutActive.args = {
       displayText: '配件',
     },
   ],
-  curcategory: 'test',
+  currentCategory: 'test',
 };
