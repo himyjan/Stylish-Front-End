@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import api from '../../utils/api';
+
+import { useInterval } from 'usehooks-ts';
 
 const Wrapper = styled.div`
   height: 500px;
@@ -107,54 +109,60 @@ const Dot = styled.div<DotProp>`
 function Carousel() {
   const [campaigns, setCampaigns] = useState([]);
   const [activeCampaignIndex, setActiveCampaignIndex] = useState(0);
-  const intervalRef = useRef<number>();
+  const [pause, setPause] = useState(false);
 
   useEffect(() => {
-    async function getCampaigns() {
-      const { data } = await api.getCampaigns();
-      setCampaigns(data);
-      intervalRef.current = window.setInterval(() => {
-        setActiveCampaignIndex((prev) =>
-          prev === data.length - 1 ? 0 : prev + 1
-        );
-      }, 5000);
-    }
-    getCampaigns();
+    const getData = async () => {
+      const data = await api.getCampaigns();
+      setCampaigns(data.data);
+    };
+    getData();
   }, []);
+
+  useInterval(
+    () => {
+      setActiveCampaignIndex((prev) =>
+        campaigns.length > 0
+          ? prev === campaigns.length - 1
+            ? 0
+            : prev + 1
+          : null
+      );
+    },
+    pause ? null : 5000
+  );
 
   return (
     <Wrapper>
-      {campaigns.map(({ picture, product_id, story }, index) => (
-        <Campaign
-          $isActive={index === activeCampaignIndex}
-          $backgroundImageUrl={picture}
-          key={index}
-          to={`/products/${product_id}`}
-        >
-          <Story>
-            <StoryContent>
-              {story.split('\r\n').slice(0, 3).join('\r\n')}
-            </StoryContent>
-            <StoryTitle>{story.split('\r\n')[3]}</StoryTitle>
-          </Story>
-        </Campaign>
-      ))}
+      {campaigns.length > 0
+        ? campaigns.map(({ picture, product_id, story }, index) => (
+            <Campaign
+              $isActive={index === activeCampaignIndex}
+              $backgroundImageUrl={picture}
+              key={index}
+              to={`/products/${product_id}`}
+              onMouseEnter={() => setPause(true)}
+              onMouseLeave={() => setPause(false)}
+            >
+              <Story>
+                <StoryContent>
+                  {story.split('\r\n').slice(0, 3).join('\r\n')}
+                </StoryContent>
+                <StoryTitle>{story.split('\r\n')[3]}</StoryTitle>
+              </Story>
+            </Campaign>
+          ))
+        : null}
       <Dots>
-        {campaigns.map((_, index) => (
-          <Dot
-            $isActive={index === activeCampaignIndex}
-            key={index}
-            onClick={() => {
-              setActiveCampaignIndex(index);
-              window.clearInterval(intervalRef.current);
-              intervalRef.current = window.setInterval(() => {
-                setActiveCampaignIndex((prev) =>
-                  prev === campaigns.length - 1 ? 0 : prev + 1
-                );
-              }, 5000);
-            }}
-          />
-        ))}
+        {campaigns.length > 0
+          ? campaigns.map((_, index) => (
+              <Dot
+                $isActive={index === activeCampaignIndex}
+                key={index}
+                onClick={() => setActiveCampaignIndex(index)}
+              />
+            ))
+          : null}
       </Dots>
     </Wrapper>
   );

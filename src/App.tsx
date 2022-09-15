@@ -1,3 +1,4 @@
+import { StrictMode } from 'react';
 import { Outlet } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { Reset } from 'styled-reset';
@@ -27,13 +28,13 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
   return (
-    <>
+    <StrictMode>
       <Reset />
       <GlobalStyle />
       <Header />
       <Outlet />
       <Footer />
-    </>
+    </StrictMode>
   );
 }
 
