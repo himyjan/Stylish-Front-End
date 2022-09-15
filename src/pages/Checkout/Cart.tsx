@@ -1,6 +1,5 @@
 import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
-import { Product } from '../../types/productType';
 
 import trash from './trash.png';
 

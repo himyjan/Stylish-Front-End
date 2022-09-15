@@ -5,8 +5,6 @@ import styled from 'styled-components';
 import add from './add.png';
 import minus from './minus.png';
 
-import { Product } from '../../types/productType';
-
 const Option = styled.div`
   display: flex;
   align-items: center;
@@ -133,8 +131,6 @@ const AddToCart = styled.button`
     color: white;
   }
 `;
-
-type ContextType = { cartItems: Product[] | null };
 
 function ProductVariants({ product }) {
   const [selectedColorCode, setSelectedColorCode] = useState(
