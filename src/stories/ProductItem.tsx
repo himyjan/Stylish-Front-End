@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 const Product = styled.div`
   width: calc((100% - 120px) / 3);
