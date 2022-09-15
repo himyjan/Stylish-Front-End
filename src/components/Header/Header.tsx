@@ -246,8 +246,8 @@ const categories = [
 
 function Header() {
   // const cartItems: Product[] = store.getState().cartItemsReducer;
-  const cartItems: Product[] = useSelector(
-    (state) => state['cartItemsReducer']
+  const cartItemsLength: number = useSelector(
+    (state) => state['cartItemsReducer'].length
   );
   const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
@@ -291,7 +291,7 @@ function Header() {
         <PageLink to="/checkout">
           <PageLinkCartIcon>
             <PageLinkIconNumber>
-              {cartItems === undefined ? 0 : cartItems.length}
+              {cartItemsLength === undefined ? 0 : cartItemsLength}
             </PageLinkIconNumber>
           </PageLinkCartIcon>
           <PageLinkText>購物車</PageLinkText>
