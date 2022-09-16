@@ -5,7 +5,7 @@ import profile from './assets/profile.png';
 import profileMobile from './assets/profile-mobile.png';
 
 type PageLinkProp = {
-  to: string;
+  onClick: React.MouseEventHandler<HTMLDivElement>;
 };
 
 const PageLink = styled.div<PageLinkProp>`
@@ -87,9 +87,15 @@ const PageLinkText = styled.div`
   }
 `;
 
-function HeaderIcon({ icon, iconMobile, cartItemsLength, text }) {
+function HeaderIcon({ icon, iconMobile, cartItemsLength, onClick }) {
   return (
-    <PageLink to="/checkout">
+    <PageLink
+      onClick={() => {
+        if (onClick) {
+          icon === 'cart' ? onClick('checkout') : onClick('profile');
+        }
+      }}
+    >
       <PageLinkIcon
         icon={icon === 'cart' ? cart : icon === 'user' ? profile : null}
         iconMobile={iconMobile === 'cart' ? cartMobile : profileMobile}
@@ -100,7 +106,9 @@ function HeaderIcon({ icon, iconMobile, cartItemsLength, text }) {
           {cartItemsLength}
         </PageLinkIconNumber>
       </PageLinkIcon>
-      <PageLinkText>{text}</PageLinkText>
+      <PageLinkText>
+        {icon === 'cart' ? '購物車' : icon === 'user' ? '會員' : ''}
+      </PageLinkText>
     </PageLink>
   );
 }

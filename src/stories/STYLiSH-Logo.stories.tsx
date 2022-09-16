@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Logo from './Logo';
+import Logo from './STYLiSH-Logo';
 
 export default {
   title: 'STYLiSH/Logo',

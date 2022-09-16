@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ProductItem from './ProductItem';
+import ProductItem from './STYLiSH-ProductItem';
 
 export default {
   title: 'STYLiSH/Product',

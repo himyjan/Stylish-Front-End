@@ -43,13 +43,13 @@ const CategoryLink = styled.a<CategoryLinkProp>`
   }
 `;
 
-function CategoryLinkGroup({ categories, curcategory, onClick }) {
+function CategoryLinkGroup({ categories, currentCategory, onClick }) {
   return (
     <>
       {categories.map(({ name, displayText }, index) => (
         <CategoryLink
           key={index}
-          $isActive={name === curcategory}
+          $isActive={name === currentCategory}
           onClick={() => {
             if (onClick) {
               onClick(name);

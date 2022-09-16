@@ -159,32 +159,39 @@ const DeleteButton = styled.div<DeleteButtonProp>`
 `;
 
 function CartItem({
-  cartItem,
-  cartIndex,
+  index,
+  image,
+  id,
+  name,
+  color,
+  size,
+  qty,
+  stock,
+  price,
   trashIcon,
   deleteBtnOnClick,
   cartQtyOnChange,
 }) {
   return (
-    <Item key={`${cartItem.id}-${cartItem.color.code}-${cartItem.size}`}>
-      <ItemImage src={cartItem.image} />
+    <Item>
+      <ItemImage src={image} />
       <ItemDetails>
-        <ItemName>{cartItem.name}</ItemName>
-        <ItemID>{cartItem.id}</ItemID>
-        <ItemColorName>顏色｜{cartItem.color.name}</ItemColorName>
-        <ItemSize>尺寸｜{cartItem.size}</ItemSize>
+        <ItemName>{name}</ItemName>
+        <ItemID>{id}</ItemID>
+        <ItemColorName>顏色｜{color.name}</ItemColorName>
+        <ItemSize>尺寸｜{size}</ItemSize>
       </ItemDetails>
       <ItemQuantity>
         <ItemQuantityName hideOnDesktop>數量</ItemQuantityName>
         <ItemQuantitySelect
-          value={cartItem.qty}
+          value={qty}
           onChange={(e) => {
             if (cartQtyOnChange) {
-              cartQtyOnChange(cartIndex, e.target.value);
+              cartQtyOnChange(index, e.target.value);
             }
           }}
         >
-          {Array(cartItem.stock)
+          {Array(stock)
             .fill(undefined)
             .map((_, index) => (
               <option key={index}>{index + 1}</option>
@@ -193,17 +200,17 @@ function CartItem({
       </ItemQuantity>
       <ItemUnitPrice>
         <ItemUnitPriceName hideOnDesktop>單價</ItemUnitPriceName>
-        <ItemUnitPriceValue>NT.{cartItem.price}</ItemUnitPriceValue>
+        <ItemUnitPriceValue>NT.{price}</ItemUnitPriceValue>
       </ItemUnitPrice>
       <ItemPrice>
         <ItemPriceName hideOnDesktop>小計</ItemPriceName>
-        <ItemPriceValue>NT.{cartItem.qty * cartItem.price}</ItemPriceValue>
+        <ItemPriceValue>NT.{qty * price}</ItemPriceValue>
       </ItemPrice>
       <DeleteButton
         trash={trashIcon}
         onClick={() => {
           if (deleteBtnOnClick) {
-            deleteBtnOnClick(cartIndex);
+            deleteBtnOnClick(index);
           }
         }}
       />
