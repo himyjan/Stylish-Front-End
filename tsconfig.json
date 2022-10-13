@@ -11,5 +11,5 @@
     "noEmit": true, // Do not compile the JS (or TS) files in this project on build
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src", "src/types/images.d.ts"]
+  "include": ["src", "src/types/images.d.ts", "stories"]
 }
