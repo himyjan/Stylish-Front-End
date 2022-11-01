@@ -28,3 +28,12 @@ yarn-error.log*
 *-lock.yaml
 *.lock
 *.lockb
+
+# next.js
+/.next/
+/out/
+*.pem
+# debug
+# local env files
+# vercel
+.vercel

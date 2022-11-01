@@ -1,0 +1,26 @@
+import Document, { Html, Head, Main, NextScript } from 'next/document'
+
+class MyDocument extends Document {
+  render() {
+    return (
+      <Html lang="zh-TW">
+        <Head>
+          <meta charSet="utf-8" />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+          <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet" />
+          <script src="https://js.tappaysdk.com/tpdirect/v5.8.0" dangerouslySetInnerHTML={{ __html: `` }} />
+          <noscript>You need to enable JavaScript to run this app.</noscript>
+        </Head>
+        
+        <body>
+          <Main />
+          <NextScript />
+          
+        </body>
+      </Html>
+    )
+  }
+}
+
+export default MyDocument      
