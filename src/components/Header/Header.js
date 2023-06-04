@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -8,6 +8,8 @@ import cart from './cart.png';
 import cartMobile from './cart-mobile.png';
 import profile from './profile.png';
 import profileMobile from './profile-mobile.png';
+
+import { cartItemsContext } from '../../contexts';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -58,6 +60,7 @@ const CategoryLinks = styled.div`
 `;
 
 const CategoryLink = styled.a`
+  cursor: pointer;
   font-size: 20px;
   letter-spacing: 30px;
   padding-left: 39px;
@@ -237,11 +240,12 @@ const categories = [
   },
 ];
 
-function Header({ cartItems }) {
+function Header() {
   const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const category = searchParams.get('category');
+  const [cartItems] = useContext(cartItemsContext);
 
   useEffect(() => {
     if (category) setInputValue('');

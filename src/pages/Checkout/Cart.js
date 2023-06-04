@@ -1,7 +1,9 @@
-import { useOutletContext } from 'react-router-dom';
+import { useContext } from 'react';
 import styled from 'styled-components';
 
 import trash from './trash.png';
+
+import { cartItemsContext } from '../../contexts';
 
 const Header = styled.div`
   display: flex;
@@ -210,7 +212,7 @@ const DeleteButton = styled.div`
 `;
 
 function Cart() {
-  const [cartItems, setCartItems] = useOutletContext();
+  const [cartItems, setCartItems] = useContext(cartItemsContext);
 
   function changeItemQuantity(itemIndex, itemQuantity) {
     const newCartItems = cartItems.map((item, index) =>

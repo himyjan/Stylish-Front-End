@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { StrictMode, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { Reset } from 'styled-reset';
 
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
+
+import { cartItemsContext } from './contexts';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -32,13 +34,15 @@ function App() {
   );
 
   return (
-    <>
-      <Reset />
-      <GlobalStyle />
-      <Header cartItems={cartItems} />
-      <Outlet context={[cartItems, setCartItems]} />
-      <Footer />
-    </>
+    <StrictMode>
+      <cartItemsContext.Provider value={[cartItems, setCartItems]}>
+        <Reset />
+        <GlobalStyle />
+        <Header />
+        <Outlet />
+        <Footer />
+      </cartItemsContext.Provider>
+    </StrictMode>
   );
 }
 
