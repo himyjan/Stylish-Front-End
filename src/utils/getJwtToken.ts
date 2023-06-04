@@ -1,16 +1,18 @@
 import api from './api';
 import fb from './fb';
 
+import { Response } from '../types/resopnseType';
+
 async function getJwtToken() {
   await fb.loadScript();
   fb.init();
-  const response = await fb.getLoginStatus();
-  let accessToken;
-  if (response.status === 'connected') {
+  const response: Response = (await fb.getLoginStatus()) as Response;
+  let accessToken: string;
+  if (response['status'] === 'connected') {
     accessToken = response.authResponse.accessToken;
   } else {
-    const response = await fb.login();
-    if (response.status === 'connected') {
+    const response: Response = (await fb.login()) as Response;
+    if (response['status'] === 'connected') {
       accessToken = response.authResponse.accessToken;
     } else {
       throw new Error('登入失敗');

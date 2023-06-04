@@ -1,13 +1,13 @@
 const tappay = {
   setupSDK() {
-    window.TPDirect.setupSDK(
+    window['TPDirect'].setupSDK(
       '12348',
       'app_pa1pQcKoY22IlnSXq5m5WP5jFKzoRG58VEXpT7wU62ud7mMbDOGzCYIlzzLF',
       'sandbox'
     );
   },
   setupCard(numberElement, expirationDateElement, ccvElement) {
-    window.TPDirect.card.setup({
+    window['TPDirect'].card.setup({
       fields: {
         number: {
           element: numberElement,
@@ -33,11 +33,11 @@ const tappay = {
     });
   },
   canGetPrime() {
-    return window.TPDirect.card.getTappayFieldsStatus().canGetPrime;
+    return window['TPDirect'].card.getTappayFieldsStatus().canGetPrime;
   },
   getPrime() {
     return new Promise((resolve) => {
-      window.TPDirect.card.getPrime((result) => {
+      window['TPDirect'].card.getPrime((result) => {
         resolve(result);
       });
     });

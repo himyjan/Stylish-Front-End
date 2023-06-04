@@ -6,6 +6,8 @@ import { Reset } from 'styled-reset';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 
+import { Product } from './types/productType';
+
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
@@ -27,7 +29,7 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
-  const [cartItems, setCartItems] = useState(
+  const [cartItems, setCartItems] = useState<Product[] | null>(
     JSON.parse(window.localStorage.getItem('cartItems')) || []
   );
 

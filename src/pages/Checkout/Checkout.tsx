@@ -7,6 +7,8 @@ import getJwtToken from '../../utils/getJwtToken';
 import tappay from '../../utils/tappay';
 import Cart from './Cart';
 
+import { Prime } from '../../types/tapPayPrimeType';
+
 const Wrapper = styled.div`
   margin: 0 auto;
   padding: 47px 0 263px;
@@ -308,7 +310,9 @@ function Checkout() {
     address: '',
     time: '',
   });
-  const [cartItems, setCartItems] = useOutletContext();
+  const cartItemsState = useOutletContext();
+  const cartItems = cartItemsState[0];
+  const setCartItems = cartItemsState[1];
   const navigate = useNavigate();
   const cardNumberRef = useRef();
   const cardExpirationDateRef = useRef();
@@ -358,7 +362,7 @@ function Checkout() {
       return;
     }
 
-    const result = await tappay.getPrime();
+    const result: Prime = await tappay.getPrime();
     if (result.status !== 0) {
       window.alert('付款資料輸入有誤');
       return;

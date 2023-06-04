@@ -43,7 +43,11 @@ const ProductColors = styled.div`
   }
 `;
 
-const ProductColor = styled.div`
+type ProductColorProp = {
+  $colorCode: string;
+};
+
+const ProductColor = styled.div<ProductColorProp>`
   width: 24px;
   height: 24px;
   box-shadow: 0px 0px 1px #bbbbbb;

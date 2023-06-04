@@ -16,7 +16,15 @@ const ItemCount = styled.div`
   flex-grow: 1;
 `;
 
-const Quantity = styled.div`
+type hideOnMobileProp = {
+  hideOnMobile: boolean;
+};
+
+type hideOnDesktopProp = {
+  hideOnDesktop: boolean;
+};
+
+const Quantity = styled.div<hideOnMobileProp>`
   width: 185px;
   padding-left: 20px;
 
@@ -25,7 +33,7 @@ const Quantity = styled.div`
   }
 `;
 
-const UnitPrice = styled.div`
+const UnitPrice = styled.div<hideOnMobileProp>`
   width: 166px;
   padding-left: 12px;
 
@@ -34,7 +42,7 @@ const UnitPrice = styled.div`
   }
 `;
 
-const Price = styled.div`
+const Price = styled.div<hideOnMobileProp>`
   width: 167px;
   padding-left: 15px;
 
@@ -125,7 +133,7 @@ const ItemQuantity = styled.div`
   }
 `;
 
-const ItemQuantityName = styled.div`
+const ItemQuantityName = styled.div<hideOnDesktopProp>`
   ${(props) => props.hideOnDesktop && 'display: none;'}
 
   @media screen and (max-width: 1279px) {
@@ -157,7 +165,7 @@ const ItemUnitPrice = styled.div`
   }
 `;
 
-const ItemUnitPriceName = styled.div`
+const ItemUnitPriceName = styled.div<hideOnDesktopProp>`
   ${(props) => props.hideOnDesktop && 'display: none;'}
 
   @media screen and (max-width: 1279px) {
@@ -182,7 +190,7 @@ const ItemPrice = styled.div`
   }
 `;
 
-const ItemPriceName = styled.div`
+const ItemPriceName = styled.div<hideOnDesktopProp>`
   ${(props) => props.hideOnDesktop && 'display: none;'}
 
   @media screen and (max-width: 1279px) {
@@ -210,7 +218,9 @@ const DeleteButton = styled.div`
 `;
 
 function Cart() {
-  const [cartItems, setCartItems] = useOutletContext();
+  const cartItemsState = useOutletContext();
+  const cartItems = cartItemsState[0];
+  const setCartItems = cartItemsState[1];
 
   function changeItemQuantity(itemIndex, itemQuantity) {
     const newCartItems = cartItems.map((item, index) =>
@@ -259,7 +269,7 @@ function Cart() {
                 onChange={(e) => changeItemQuantity(index, e.target.value)}
               >
                 {Array(item.stock)
-                  .fill()
+                  .fill(undefined)
                   .map((_, index) => (
                     <option key={index}>{index + 1}</option>
                   ))}

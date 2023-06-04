@@ -57,7 +57,11 @@ const CategoryLinks = styled.div`
   }
 `;
 
-const CategoryLink = styled.a`
+type CategoryLinkProp = {
+  $isActive: boolean;
+};
+
+const CategoryLink = styled.a<CategoryLinkProp>`
   font-size: 20px;
   letter-spacing: 30px;
   padding-left: 39px;
@@ -278,13 +282,13 @@ function Header({ cartItems }) {
       />
       <PageLinks>
         <PageLink to="/checkout">
-          <PageLinkCartIcon icon={cart}>
-            <PageLinkIconNumber>{cartItems.length}</PageLinkIconNumber>
+          <PageLinkCartIcon>
+            <PageLinkIconNumber>{(cartItems as []).length}</PageLinkIconNumber>
           </PageLinkCartIcon>
           <PageLinkText>購物車</PageLinkText>
         </PageLink>
         <PageLink to="/profile">
-          <PageLinkProfileIcon icon={profile} />
+          <PageLinkProfileIcon />
           <PageLinkText>會員</PageLinkText>
         </PageLink>
       </PageLinks>

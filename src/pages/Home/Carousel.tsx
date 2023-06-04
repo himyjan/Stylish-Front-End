@@ -13,7 +13,12 @@ const Wrapper = styled.div`
   }
 `;
 
-const Campaign = styled(Link)`
+type CampaignProp = {
+  $backgroundImageUrl: string;
+  $isActive: boolean;
+};
+
+const Campaign = styled(Link)<CampaignProp>`
   width: 100%;
   height: 100%;
   position: absolute;
@@ -73,7 +78,11 @@ const Dots = styled.div`
   }
 `;
 
-const Dot = styled.div`
+type DotProp = {
+  $isActive: boolean;
+};
+
+const Dot = styled.div<DotProp>`
   width: 10px;
   height: 10px;
   background-color: ${(props) => (props.$isActive ? '#8b572a' : 'white')};
@@ -98,7 +107,7 @@ const Dot = styled.div`
 function Carousel() {
   const [campaigns, setCampaigns] = useState([]);
   const [activeCampaignIndex, setActiveCampaignIndex] = useState(0);
-  const intervalRef = useRef();
+  const intervalRef = useRef<number>();
 
   useEffect(() => {
     async function getCampaigns() {
