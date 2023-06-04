@@ -9,6 +9,8 @@ import cartMobile from './cart-mobile.png';
 import profile from './profile.png';
 import profileMobile from './profile-mobile.png';
 
+import { useSelector } from 'react-redux';
+
 const Wrapper = styled.div`
   position: fixed;
   top: 0;
@@ -241,7 +243,13 @@ const categories = [
   },
 ];
 
-function Header({ cartItems }) {
+function Header() {
+  // const cartItems: Product[] = store.getState().cartItemsReducer;
+
+  const cartItemsLength = useSelector(
+    (state) => state['cartItemsReducer'].length
+  );
+
   const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -283,7 +291,9 @@ function Header({ cartItems }) {
       <PageLinks>
         <PageLink to="/checkout">
           <PageLinkCartIcon>
-            <PageLinkIconNumber>{(cartItems as []).length}</PageLinkIconNumber>
+            <PageLinkIconNumber>
+              {cartItemsLength === undefined ? 0 : cartItemsLength}
+            </PageLinkIconNumber>
           </PageLinkCartIcon>
           <PageLinkText>購物車</PageLinkText>
         </PageLink>

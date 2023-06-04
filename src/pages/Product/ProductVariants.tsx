@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
 import add from './add.png';
 import minus from './minus.png';
+
+import { useDispatch } from 'react-redux';
+import { addCartItems } from '../../reducers/CartItemsReducer';
 
 const Option = styled.div`
   display: flex;
@@ -136,11 +138,9 @@ function ProductVariants({ product }) {
   const [selectedColorCode, setSelectedColorCode] = useState(
     product.colors[0].code
   );
-  const [selectedSize, setSelectedSize] = useState();
+  const [selectedSize, setSelectedSize] = useState<string>();
   const [quantity, setQuantity] = useState(1);
-  const cartItemsState = useOutletContext();
-  const cartItems = cartItemsState[0];
-  const setCartItems = cartItemsState[1];
+  const dispatch = useDispatch();
 
   function getStock(colorCode, size) {
     return product.variants.find(
@@ -154,22 +154,9 @@ function ProductVariants({ product }) {
       return;
     }
 
-    const newCartItems = [
-      ...cartItems,
-      {
-        color: product.colors.find((color) => color.code === selectedColorCode),
-        id: product.id,
-        image: product.main_image,
-        name: product.title,
-        price: product.price,
-        qty: quantity,
-        size: selectedSize,
-        stock: getStock(selectedColorCode, selectedSize),
-      },
-    ];
-    setCartItems(newCartItems);
-    window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
-    window.alert('已加入商品');
+    dispatch(
+      addCartItems({ product, quantity, selectedSize, selectedColorCode })
+    );
   }
   return (
     <>

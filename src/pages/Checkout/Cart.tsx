@@ -1,7 +1,15 @@
-import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
 import trash from './trash.png';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { Product } from '../../types/productType';
+import {
+  changeQuantity,
+  deleteCartItems,
+} from '../../reducers/CartItemsReducer';
+
+import * as _ from 'lodash';
 
 const Header = styled.div`
   display: flex;
@@ -218,29 +226,18 @@ const DeleteButton = styled.div`
 `;
 
 function Cart() {
-  const cartItemsState = useOutletContext();
-  const cartItems = cartItemsState[0];
-  const setCartItems = cartItemsState[1];
+  // const cartItems: Product[] = store.getState().cartItemsReducer;
+  const cartItems: Product[] = useSelector(
+    (state) => state['cartItemsReducer']
+  );
+  const dispatch = useDispatch();
 
   function changeItemQuantity(itemIndex, itemQuantity) {
-    const newCartItems = cartItems.map((item, index) =>
-      index === itemIndex
-        ? {
-            ...item,
-            qty: itemQuantity,
-          }
-        : item
-    );
-    setCartItems(newCartItems);
-    window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
-    window.alert('已修改數量');
+    dispatch(changeQuantity({ itemIndex, itemQuantity }));
   }
 
   function deleteItem(itemIndex) {
-    const newCartItems = cartItems.filter((_, index) => index !== itemIndex);
-    setCartItems(newCartItems);
-    window.localStorage.setItem('cartItems', JSON.stringify(newCartItems));
-    window.alert('已刪除商品');
+    dispatch(deleteCartItems({ itemIndex }));
   }
 
   return (
@@ -268,11 +265,11 @@ function Cart() {
                 value={item.qty}
                 onChange={(e) => changeItemQuantity(index, e.target.value)}
               >
-                {Array(item.stock)
-                  .fill(undefined)
-                  .map((_, index) => (
-                    <option key={index}>{index + 1}</option>
-                  ))}
+                {_.range(1, item.stock + 1).map((_, index) => (
+                  <option key={index} value={index}>
+                    {index + 1}
+                  </option>
+                ))}
               </ItemQuantitySelect>
             </ItemQuantity>
             <ItemUnitPrice>

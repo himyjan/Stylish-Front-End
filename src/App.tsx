@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { Reset } from 'styled-reset';
@@ -29,16 +28,12 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
-  const [cartItems, setCartItems] = useState<Product[] | null>(
-    JSON.parse(window.localStorage.getItem('cartItems')) || []
-  );
-
   return (
     <>
       <Reset />
       <GlobalStyle />
-      <Header cartItems={cartItems} />
-      <Outlet context={[cartItems, setCartItems]} />
+      <Header />
+      <Outlet />
       <Footer />
     </>
   );

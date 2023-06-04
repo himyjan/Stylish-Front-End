@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import api from '../../utils/api';
@@ -8,6 +8,10 @@ import tappay from '../../utils/tappay';
 import Cart from './Cart';
 
 import { Prime } from '../../types/tapPayPrimeType';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { Product } from '../../types/productType';
+import { clearCartItems } from '../../reducers/CartItemsReducer';
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -310,9 +314,10 @@ function Checkout() {
     address: '',
     time: '',
   });
-  const cartItemsState = useOutletContext();
-  const cartItems = cartItemsState[0];
-  const setCartItems = cartItemsState[1];
+  const cartItems: Product[] = useSelector(
+    (state) => state['cartItemsReducer']
+  );
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const cardNumberRef = useRef();
   const cardExpirationDateRef = useRef();
@@ -362,7 +367,7 @@ function Checkout() {
       return;
     }
 
-    const result: Prime = await tappay.getPrime();
+    const result: Prime = (await tappay.getPrime()) as Prime;
     if (result.status !== 0) {
       window.alert('付款資料輸入有誤');
       return;
@@ -384,7 +389,7 @@ function Checkout() {
       jwtToken
     );
     window.alert('付款成功');
-    setCartItems([]);
+    dispatch(clearCartItems());
     navigate('/thankyou', { state: { orderNumber: data.number } });
   }
 

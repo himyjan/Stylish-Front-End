@@ -3,6 +3,12 @@ type Color = {
   name: string;
 };
 
+type Variants = {
+  color_code: string;
+  size: string;
+  stock: number;
+};
+
 export type Product = {
   id?: number;
   product_id?: number;
@@ -26,4 +32,5 @@ export type Product = {
   stock?: number;
   name?: string;
   image?: string;
+  variants: Variants[];
 };
