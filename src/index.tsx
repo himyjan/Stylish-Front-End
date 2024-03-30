@@ -8,7 +8,7 @@ import ThankYou from './pages/ThankYou/ThankYou';
 import Product from './pages/Product/Product';
 import Profile from './pages/Profile/Profile';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
   <BrowserRouter>
